@@ -14,6 +14,8 @@ for i=1:length(PCaUniq)
     averages(i)=nanmean(MRI.pirads(PCaString==PCaUniq{i}));
 end
 
+Averages=table(PCaUniq,averages);
+
 %Checking that only a few classes contain useful values
 ind=find(isnan(MRI.pirads)==0);
 usefulClasses=unique(PCaString(ind));
