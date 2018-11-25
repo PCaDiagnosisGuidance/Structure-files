@@ -14,8 +14,29 @@ for i=1:length(PCaUniq)
     averages(i)=nanmean(MRI.pirads(PCaString==PCaUniq{i}));
 end
 
-%Checken dat alleen enkele classes bruikbare waarden hebben
+%Checking that only a few classes contain useful values
 ind=find(isnan(MRI.pirads)==0);
 usefulClasses=unique(PCaString(ind));
 
 clearvars ind i
+
+%Mean of ja and recidief combined
+meanJaRecidief=nanmean(MRI.pirads(or(PCaString=="ja",PCaString=="recidief")));
+
+%This mean is very close to "ja" value: more analysis;
+
+%Number of useful "ja" entries
+jaEntryCount=sum(and(PCaString=="ja",isnan(MRI.pirads)==0));
+
+%Number of useful "recidief" entries
+recidiefEntryCount=sum(and(PCaString=="recidief",isnan(MRI.pirads)==0));
+
+%Number of useful "nee" entries
+neeEntryCount=sum(and(PCaString=="nee",isnan(MRI.pirads)==0));
+
+entryArr=[jaEntryCount; neeEntryCount; recidiefEntryCount];
+
+clearvars jaEntryCount recidiefEntryCount neeEntryCount
+
+%Table for entry counts
+entryCounts=table({'ja';'nee';'recidief'},entryArr);
