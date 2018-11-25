@@ -20,11 +20,6 @@ usefulClasses=unique(PCaString(ind));
 
 clearvars ind i
 
-%Mean of ja and recidief combined
-meanJaRecidief=nanmean(MRI.pirads(or(PCaString=="ja",PCaString=="recidief")));
-
-%This mean is very close to "ja" value: more analysis;
-
 %Number of useful "ja" entries
 jaEntryCount=sum(and(PCaString=="ja",isnan(MRI.pirads)==0));
 
