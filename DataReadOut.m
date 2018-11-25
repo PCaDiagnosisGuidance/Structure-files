@@ -131,8 +131,14 @@ end
 pirads = str2double(pirads);
 
 % mriPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
-%%%%%%%%% TO DO %%%%%%%%%%%%%%%%%%
-
+% for i=1:length(mriPCa)
+%     if strcmp(mriPCa(i,1),'ja') %|| strcmp(mriPCa(i,1),'recidief')
+%         mriPCa(i,1) = {'1'};
+%     elseif strcmp(mriPCa(i,1),'nee')
+%         mriPCa(i,1) = {'0'};
+%     end
+% end
+% mriPCa=str2double(mriPCa);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
