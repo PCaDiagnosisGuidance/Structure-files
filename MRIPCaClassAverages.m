@@ -37,3 +37,5 @@ clearvars jaEntryCount recidiefEntryCount neeEntryCount
 
 %Table for entry counts
 entryCounts=table({'ja';'nee';'recidief'},entryArr);
+
+%test
