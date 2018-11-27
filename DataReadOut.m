@@ -105,6 +105,7 @@ PSA.gender = gender;
 PSA.age = age;
 PSA.psa = psa;
 PSA.freepsa = freepsa; 
+PSA.unit = unit;
 PSA.date = datepsa;
 
 %% MRI data Read-out 
@@ -134,8 +135,8 @@ mridate = datenum(mridate);
 
 % PI-RADS values completion, set all unknown and negative values to 0
 for i=1:length(pirads)
-    if strcmp(pirads(i,1),'neg') == 1 %|| strcmp(pirads(i,1),'geen')== 1 ...
-            %|| strcmp(pirads(i,1),'?') == 1
+    if strcmp(pirads(i,1),'neg') == 1 || strcmp(pirads(i,1),'geen')== 1 ...
+            || strcmp(pirads(i,1),'?') == 1
         pirads(i,1) = {'0'}; 
     end
     
@@ -293,7 +294,7 @@ dbcedate = datenum(dbcedate);
 
 % dbcPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
 for i=1:length(dbcPCa)
-    if strcmp(dbcPCa(i,1),'niet-PCa') == 1 
+    if strcmp(dbcPCa(i,1),'niet-PCA') == 1 
         dbcPCa(i,1) = {'0'}; 
     elseif strcmp(dbcPCa(i,1),'PCA') == 1
         dbcPCa(i,1) = {'1'};
@@ -306,3 +307,5 @@ DBC.ID = dbcID;
 DBC.sdate = dbcsdate;
 DBC.edate = dbcedate;
 DBC.PCa = dbcPCa;
+
+%test
