@@ -6,6 +6,7 @@ close all
 foldername = 'C:\Users\s165635\Desktop\DBL Computational Biology (8QC00)\OGO groep 5';
 [PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut(foldername);
 
+% GITHUB TEST
 %% Aligning of the data in a new dataset
 Dataset = [];
 for i = 1:length(PSA.ID)
