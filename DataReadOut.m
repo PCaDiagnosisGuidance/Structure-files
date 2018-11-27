@@ -136,14 +136,14 @@ end
 pirads = str2double(pirads);
 
 % mriPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
-% for i=1:length(mriPCa)
-%     if strcmp(mriPCa(i,1),'ja') %|| strcmp(mriPCa(i,1),'recidief')
-%         mriPCa(i,1) = {'1'};
-%     elseif strcmp(mriPCa(i,1),'nee')
-%         mriPCa(i,1) = {'0'};
-%     end
-% end
-% mriPCa=str2double(mriPCa);
+for i=1:length(mriPCa)
+    if strcmp(mriPCa(i,1),'ja') %|| strcmp(mriPCa(i,1),'recidief')
+        mriPCa(i,1) = {'1'};
+    elseif strcmp(mriPCa(i,1),'nee')
+        mriPCa(i,1) = {'0'};
+    end
+end
+mriPCa=str2double(mriPCa);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -177,12 +177,12 @@ clearvars filename delimiter startRow formatSpec fileID dataArray ans;
 % Converting of date to a numeric value
 bioptdate = datenum(bioptdate); 
 
-% Gleason values completion, set all unknown and negative values to 0
+% Gleason values completion, set all neg values to 0
 for i=1:length(gleason)
-    if strcmp(gleason(i,1),'neg') == 1 || strcmp(gleason(i,1),'?') == 1
+    if strcmp(gleason(i,1),'neg') == 1 %|| strcmp(gleason(i,1),'?') == 1
         gleason(i,1) = {'0'}; 
     elseif strcmp(gleason(i,1),'prostatectomie') == 1
-        gleason(i,1) = {'0'};   % Ik heb deze er nu los bij gezet, omdat we deze later misschien willen weghalen
+        gleason(i,1) = {'NaN'};   % Halen we dus weg
     end
 end
 gleason = str2double(gleason);
@@ -190,17 +190,17 @@ gleason = str2double(gleason);
 % bioptPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
 %%%%%%%%% TO DO %%%%%%%%%%%%%%%%%%
 bioptPCa = lower(bioptPCa);
-for i=1:length(bioptPCa)
-    if strcmp(bioptPCa(i,1),'nee') == 1 || strcmp(bioptPCa(i,1),'?') == 1 
-        bioptPCa(i,1) = {'0'}; 
-    elseif strcmp(bioptPCa(i,1),'ja') == 1 || strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
-            || strcmp(bioptPCa(i,1),'ja (later)') == 1 
-        bioptPCa(i,1) = {'1'};
-    elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
-        bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
-    end
-end
-bioptPCa = str2double(bioptPCa);
+% for i=1:length(bioptPCa)
+%     if strcmp(bioptPCa(i,1),'nee') == 1 || strcmp(bioptPCa(i,1),'?') == 1 
+%         bioptPCa(i,1) = {'0'}; 
+%     elseif strcmp(bioptPCa(i,1),'ja') == 1 || strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
+%             || strcmp(bioptPCa(i,1),'ja (later)') == 1 
+%         bioptPCa(i,1) = {'1'};
+%     elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
+%         bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
+%     end
+% end
+bioptPCa = string(bioptPCa);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Creating a struct of the data
