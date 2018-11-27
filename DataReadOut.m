@@ -49,10 +49,10 @@ gender = dataArray{:, 2};
 age = dataArray{:, 3};
 psa = dataArray{:, 4};
 freepsa = dataArray{:, 5};
-unit = dataArray{:, 6};
+% unit = dataArray{:, 6};
 datepsa = dataArray{:, 7};
-specialism = dataArray{:, 8};
-activity = dataArray{:, 9};
+% specialism = dataArray{:, 8};
+% activity = dataArray{:, 9};
 
 % Clear temporary variables
 clearvars filename delimiter startRow formatSpec fileID dataArray ans;
@@ -87,6 +87,17 @@ for i=1:length(freepsa)
     end
 end
 freepsa = str2double(freepsa);
+
+% Deleting women from dataset
+ind=find(gender=="V");
+for i=1:length(ind)
+        psaID(ind(i)-i+1)=[];
+        gender(ind(i)-i+1)=[];
+        age(ind(i)-i+1)=[];
+        psa(ind(i)-i+1)=[];
+        freepsa(ind(i)-i+1)=[];
+        datepsa(ind(i)-i+1)=[];
+end
 
 % Creating a struct of the data
 PSA.ID = psaID;
@@ -190,17 +201,17 @@ gleason = str2double(gleason);
 % bioptPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
 %%%%%%%%% TO DO %%%%%%%%%%%%%%%%%%
 bioptPCa = lower(bioptPCa);
-% for i=1:length(bioptPCa)
-%     if strcmp(bioptPCa(i,1),'nee') == 1 || strcmp(bioptPCa(i,1),'?') == 1 
-%         bioptPCa(i,1) = {'0'}; 
-%     elseif strcmp(bioptPCa(i,1),'ja') == 1 || strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
-%             || strcmp(bioptPCa(i,1),'ja (later)') == 1 
-%         bioptPCa(i,1) = {'1'};
-%     elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
-%         bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
-%     end
-% end
-bioptPCa = string(bioptPCa);
+for i=1:length(bioptPCa)
+    if strcmp(bioptPCa(i,1),'nee')% == 1 || strcmp(bioptPCa(i,1),'?') == 1 
+        bioptPCa(i,1) = {'0'}; 
+    elseif strcmp(bioptPCa(i,1),'ja')% == 1 || strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
+           % || strcmp(bioptPCa(i,1),'ja (later)') == 1 
+        bioptPCa(i,1) = {'1'};
+   % elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
+   %     bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
+    end
+end
+bioptPCa = str2double(bioptPCa);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Creating a struct of the data
