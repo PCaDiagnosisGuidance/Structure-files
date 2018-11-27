@@ -139,7 +139,7 @@ for i=1:length(pirads)
         pirads(i,1) = {'0'}; 
     end
     
-    %Throw the 6 value away
+    %Throw the 6 values away (questionable actually, maybe make them 5?)
     if strcmp(pirads(i,1),'6')
         pirads(i,1) = {'NaN'};
     end
@@ -199,7 +199,6 @@ end
 gleason = str2double(gleason);
 
 % bioptPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
-%%%%%%%%% TO DO %%%%%%%%%%%%%%%%%%
 bioptPCa = lower(bioptPCa);
 for i=1:length(bioptPCa)
     if strcmp(bioptPCa(i,1),'nee')% == 1 || strcmp(bioptPCa(i,1),'?') == 1 
