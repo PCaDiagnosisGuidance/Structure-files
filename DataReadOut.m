@@ -105,7 +105,7 @@ PSA.gender = gender;
 PSA.age = age;
 PSA.psa = psa;
 PSA.freepsa = freepsa; 
-PSA.unit = unit;
+%PSA.unit = unit;
 PSA.date = datepsa;
 
 %% MRI data Read-out 
@@ -135,8 +135,8 @@ mridate = datenum(mridate);
 
 % PI-RADS values completion, set all unknown and negative values to 0
 for i=1:length(pirads)
-    if strcmp(pirads(i,1),'neg') == 1 || strcmp(pirads(i,1),'geen')== 1 ...
-            || strcmp(pirads(i,1),'?') == 1
+    if strcmp(pirads(i,1),'neg') == 1 %|| strcmp(pirads(i,1),'geen')== 1 ...
+           % || strcmp(pirads(i,1),'?') == 1
         pirads(i,1) = {'0'}; 
     end
     
@@ -245,9 +245,9 @@ echodate = datenum(echodate);
 
 % Gleason values completion, set all unknown and negative values to 0
 for i=1:length(volume)
-    if strcmp(volume(i,1),'NA') == 1 || strcmp(volume(i,1),'?') == 1
-        volume(i,1) = {'0'}; 
-    elseif strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen
+    %if strcmp(volume(i,1),'NA') == 1 || strcmp(volume(i,1),'?') == 1
+       % volume(i,1) = {'0'}; 
+    if strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen
         volume(i,1) = {'116'};  
     elseif strcmp(volume(i,1),'>150') == 1
         volume(i,1) = {'150'};
