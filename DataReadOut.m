@@ -89,7 +89,7 @@ end
 freepsa = str2double(freepsa);
 
 % Deleting women from dataset
-ind=find(gender=="V");
+ind=find(ismember(gender,'V'));
 for i=1:length(ind)
         psaID(ind(i)-i+1)=[];
         gender(ind(i)-i+1)=[];
