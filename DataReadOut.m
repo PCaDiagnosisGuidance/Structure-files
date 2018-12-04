@@ -83,7 +83,7 @@ for i=1:length(freepsa)
     elseif strcmp(freepsa(i,1),'>50') == 1
         freepsa(i,1) = {'50'}; 
     elseif strcmp(freepsa(i,1),'NA') == 1
-        freepsa(i,1) = {'0'};
+        freepsa(i,1) = {'-1'};
     end
 end
 freepsa = str2double(freepsa);
@@ -142,7 +142,7 @@ for i=1:length(pirads)
     
     %Throw the 6 values away (questionable actually, maybe make them 5?)
     if strcmp(pirads(i,1),'6')
-        pirads(i,1) = {'NaN'};
+        pirads(i,1) = {'5'};
     end
 end
 pirads = str2double(pirads);

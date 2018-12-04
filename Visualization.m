@@ -52,6 +52,8 @@ end
 % measurements 
 Dataset = unique(Dataset, 'rows');
 
+
+
 %% Visualization of data
 % Eventueel mogelijk om 
 % PSA versus PI-RADS score
