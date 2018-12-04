@@ -25,7 +25,7 @@ age=zeros(size(scores));
 %Find corresponding age with score by using nearest date
 for i=1:length(scores)
     ind=find(PSA.ID==IDs(i));
-    diffdatearr=abs(PSA.age(ind)-dates(i));
+    diffdatearr=abs(PSA.date(ind)-dates(i));
     [~,indmin]=min(diffdatearr);
     age(i)=PSA.age(ind(indmin));
 end

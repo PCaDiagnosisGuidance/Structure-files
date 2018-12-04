@@ -25,7 +25,7 @@ age=zeros(size(scores));
 %Find corresponding age with score by using nearest date
 for i=1:length(scores)
     ind=find(PSA.ID==IDs(i));
-    diffdatearr=abs(PSA.age(ind)-dates(i));
+    diffdatearr=abs(PSA.date(ind)-dates(i));
     [~,indmin]=min(diffdatearr);
     age(i)=PSA.age(ind(indmin));
 end
@@ -42,7 +42,7 @@ hold off
 
 ylabel(lbl)
 xlabel('Age [years]')
-title('Prostate volume by age with regression; a = 18.7, b = .5')
+title('Prostate volume by age with regression; a = 20, b = .5')
 
 save('regr_stats.mat','b','bint','r','rint','stats')
 
@@ -67,7 +67,7 @@ hold off
 
 ylabel(lbl)
 xlabel('Age [years]')
-title('Prostate volume by age w/o outliers with regression; a = 26.3, b = .4')
+title('Prostate volume by age w/o outliers with regression; a = 27, b = .4')
 
 save('regr_stats_wo_outliers.mat','b','bint','r','rint','stats')
 
