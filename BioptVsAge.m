@@ -46,7 +46,7 @@ end
 
 %% Find ages for not useful entries
 %Find all indices for not useful entries in score dataset
-notusefulEntryInd=find(isnan(MRI.pirads));
+notusefulEntryInd=find(isnan(BIOPT.gleason));
 
 %Create three arrays new arrays for only the not useful entries
 notscores=BIOPT.gleason(notusefulEntryInd);
