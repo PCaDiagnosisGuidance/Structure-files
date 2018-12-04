@@ -1,3 +1,4 @@
+clearvars -except BIOPT MRI PSA ECHO DBC
 close all
 
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
@@ -42,7 +43,7 @@ hold off
 
 ylabel(lbl)
 xlabel('Age [years]')
-title('Prostate volume by age with regression; a = 20, b = .5')
+title('Prostate volume by age with regression; a = 20.0, b = .5')
 
 save('regr_stats.mat','b','bint','r','rint','stats')
 
@@ -67,9 +68,49 @@ hold off
 
 ylabel(lbl)
 xlabel('Age [years]')
-title('Prostate volume by age w/o outliers with regression; a = 27, b = .4')
+title('Prostate volume by age w/o outliers with regression; a = 27.0, b = .4')
 
 save('regr_stats_wo_outliers.mat','b','bint','r','rint','stats')
 
+%% Age>50
+age3ind=find(age>=50);
+age3=age(age3ind);
+scores3=scores(age3ind);
+
+X=[ones(size(age3)) age3];
+[b,bint,r,rint,stats]=regress(scores3,X);
+
+figure(3)
+scatter(age3,scores3)
+
+hold on
+plot(age,b(1)+b(2)*age)
+hold off
+
+ylabel(lbl)
+xlabel('Age [years]')
+title('Prostate volume by age>50 with regression; a = 32.5, b = .3')
+
+save('regr_stats_age_50.mat','b','bint','r','rint','stats')
+
+age4ind=find(age2>=50);
+age4=age2(age4ind);
+scores4=scores2(age4ind);
+
+X=[ones(size(age4)) age4];
+[b,bint,r,rint,stats]=regress(scores4,X);
+
+figure(4)
+scatter(age4,scores4)
+
+hold on
+plot(age,b(1)+b(2)*age)
+hold off
+
+ylabel(lbl)
+xlabel('Age [years]')
+title('Prostate volume by age>50 w/o outliers with regression; a = 40.7, b = .2')
+
+save('regr_stats_wo_outliers_age_50.mat','b','bint','r','rint','stats')
 
 

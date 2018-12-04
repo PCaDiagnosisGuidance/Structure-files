@@ -1,3 +1,4 @@
+clearvars -except BIOPT MRI PSA ECHO DBC
 close all
 
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
@@ -7,12 +8,14 @@ close all
 PSAUniq=unique(PSA.ID);
 PSAperID=zeros(size(PSAUniq));
 AgePerID=PSAperID;
-%AgeDiffPerID=PSAperID; %niet nodig, max hiervan is 8
+
+% Gender=string(PSA.gender); gebruikt voor vrouwenanalyse
 
 %Calculating means per patient
 for i=1:length(PSAUniq)
     PSAperID(i)=mean(PSA.psa(PSA.ID==PSAUniq(i)));
     AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
+%     GenderPerID(i)=unique(Gender(PSA.ID==PSAUniq(i)));
 end
 
 %% Analysis of MRI dataset

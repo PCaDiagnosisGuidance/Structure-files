@@ -1,3 +1,4 @@
+clearvars -except BIOPT MRI PSA ECHO DBC
 close all
 
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
@@ -7,7 +8,6 @@ close all
 PSAUniq=unique(PSA.ID);
 PSAperID=zeros(size(PSAUniq));
 AgePerID=PSAperID;
-%AgeDiffPerID=PSAperID; %niet nodig, max hiervan is 8
 
 %Calculating means per patient
 for i=1:length(PSAUniq)

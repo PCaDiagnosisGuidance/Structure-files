@@ -1,3 +1,4 @@
+clearvars -except BIOPT MRI PSA ECHO DBC
 close all
 
 %Definitions for means of PSA and age per patient (ID)
