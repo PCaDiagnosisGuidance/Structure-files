@@ -83,7 +83,7 @@ for i=1:length(freepsa)
     elseif strcmp(freepsa(i,1),'>50') == 1
         freepsa(i,1) = {'50'}; 
     elseif strcmp(freepsa(i,1),'NA') == 1
-        freepsa(i,1) = {'-1'};
+        freepsa(i,1) = {'0'};
     end
 end
 freepsa = str2double(freepsa);
@@ -135,9 +135,10 @@ mridate = datenum(mridate);
 
 % PI-RADS values completion, set all unknown and negative values to 0
 for i=1:length(pirads)
-    if strcmp(pirads(i,1),'neg') == 1 %|| strcmp(pirads(i,1),'geen')== 1 ...
-           % || strcmp(pirads(i,1),'?') == 1
+    if strcmp(pirads(i,1),'neg') == 1 || strcmp(pirads(i,1),'geen')== 1 ...
         pirads(i,1) = {'0'}; 
+    elseif strcmp(pirads(i,1),'?') == 1
+        pirads(i,1) = {'?'};
     end
     
     %Throw the 6 values away (questionable actually, maybe make them 5?)
@@ -191,8 +192,10 @@ bioptdate = datenum(bioptdate);
 
 % Gleason values completion, set all neg values to 0
 for i=1:length(gleason)
-    if strcmp(gleason(i,1),'neg') == 1 %|| strcmp(gleason(i,1),'?') == 1
+    if strcmp(gleason(i,1),'neg') == 1 
         gleason(i,1) = {'0'}; 
+    elseif strcmp(gleason(i,1),'?') == 1
+        gleason(i,1) = {'?'};
     elseif strcmp(gleason(i,1),'prostatectomie') == 1
         gleason(i,1) = {'NaN'};   % Halen we dus weg
     end
@@ -202,11 +205,13 @@ gleason = str2double(gleason);
 % bioptPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
 bioptPCa = lower(bioptPCa);
 for i=1:length(bioptPCa)
-    if strcmp(bioptPCa(i,1),'nee')% == 1 || strcmp(bioptPCa(i,1),'?') == 1 
+    if strcmp(bioptPCa(i,1),'nee') == 1 
         bioptPCa(i,1) = {'0'}; 
-    elseif strcmp(bioptPCa(i,1),'ja')% == 1 || strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
+    elseif strcmp(bioptPCa(i,1),'ja') == 1 %elseif strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
            % || strcmp(bioptPCa(i,1),'ja (later)') == 1 
         bioptPCa(i,1) = {'1'};
+    elseif strcmp(bioptPCa(i,1),'?') == 1
+        bioptPCa(i,1) = {'?'};
    % elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
    %     bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
     end
@@ -245,9 +250,11 @@ echodate = datenum(echodate);
 
 % Gleason values completion, set all unknown and negative values to 0
 for i=1:length(volume)
-    %if strcmp(volume(i,1),'NA') == 1 || strcmp(volume(i,1),'?') == 1
-       % volume(i,1) = {'0'}; 
-    if strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen
+    if strcmp(volume(i,1),'NA') == 1 
+        volume(i,1) = {'0'}; 
+    elseif strcmp(volume(i,1),'?') == 1
+        volume(i,1) = {'NaN'};
+    elseif strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen
         volume(i,1) = {'116'};  
     elseif strcmp(volume(i,1),'>150') == 1
         volume(i,1) = {'150'};

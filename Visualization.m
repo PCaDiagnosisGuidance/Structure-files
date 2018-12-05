@@ -66,7 +66,7 @@ scatter(psa,pirads,'LineWidth',0.5,'MarkerFaceColor','b','MarkerFaceAlpha',.02,'
 axis([0 20 0 6]);
 xlabel('PSA');
 ylabel('PI-RADS'); 
-clearvars psa imri pirads
+clearvars psa imri pirads 
 
 % PSA versus free PSA
 subplot(2,3,2);
@@ -114,66 +114,108 @@ clearvars fpsa volume ivolume
 
 % PCa versus PSA
 figure(2);
-subplot(2,3,1);     
+subplot(2,4,1);     
 iPCa1 = find(Dataset(:,7) == 1);
 psa1 = Dataset(iPCa1,2);
-h1 = histogram(psa1,10000,'FaceColor','g','Normalization','probability'); % show the amount of PCa cases
+h1 = histogram(psa1,10000,'FaceColor','r','Normalization','probability'); % show the amount of PCa cases
 hold on
 iPCa2 = find(Dataset(:,7) == 0);
 psa2 = Dataset(iPCa2,2);
-h2 = histogram(psa2,10000,'FaceColor','r','Normalization','probability'); % show the amount of non PCa cases
+h2 = histogram(psa2,10000,'FaceColor','g','Normalization','probability'); % show the amount of non PCa cases
 xlim([0 25]);
 ylim([0 0.1]);
 xlabel('PSA');
-clearvars psa1 psa2
+clearvars psa1 psa2 
 
 % PCa versus MRI
-subplot(2,3,2);     
+subplot(2,4,2);     
 mri1 = Dataset(iPCa1,4);
-h1 = histogram(mri1,6,'FaceColor','g','Normalization','probability');
+h1 = histogram(mri1,6,'FaceColor','r','Normalization','probability');
 hold on
 mri2 = Dataset(iPCa2,4);
-h2 = histogram(mri2,6,'FaceColor','r','Normalization','probability');
-xlim([1 6]);
+h2 = histogram(mri2,6,'FaceColor','g','Normalization','probability');
+xlim([1 5.5]);
 ylim([0 0.4]); 
 xlabel('PI-RADS');
 clearvars mri1 mri2
 
 % PCa versus freePSA
-subplot(2,3,3);     
+subplot(2,4,3);     
 fPSA1 = Dataset(iPCa1,3);
-h1 = histogram(fPSA1,150,'FaceColor','g','Normalization','probability');
+h1 = histogram(fPSA1,250,'FaceColor','r','Normalization','probability');
 hold on
 fPSA2 = Dataset(iPCa2,3);
-h2 = histogram(fPSA2,150,'FaceColor','r','Normalization','probability');
+h2 = histogram(fPSA2,250,'FaceColor','g','Normalization','probability');
 xlim([0 3]);
 ylim([0 1]);
 xlabel('fPSA');
 clearvars fPSA1 fPSA2
 
 % PCa versus Gleason score
-subplot(2,3,4);     
+subplot(2,4,4);     
 biopt1 = Dataset(iPCa1,5);
-h1 = histogram(biopt1,12,'FaceColor','g','Normalization','probability');
+h1 = histogram(biopt1,12,'FaceColor','r','Normalization','probability');
 hold on
 biopt2 = Dataset(iPCa2,5);
-h2 = histogram(biopt2,12,'FaceColor','r','Normalization','probability');
+h2 = histogram(biopt2,12,'FaceColor','g','Normalization','probability');
 xlim([1 10.2]);
 ylim([0 0.4]);
 xlabel('Gleason');
 clearvars biopt1 biopt2
 
 % PCa versus volume
-subplot(2,3,5);     
+subplot(2,4,5);     
 echo1 = Dataset(iPCa1,6);
-h1 = histogram(echo1,120,'FaceColor','g','Normalization','probability');
+h1 = histogram(echo1,120,'FaceColor','r','Normalization','probability');
 hold on
 echo2 = Dataset(iPCa2,6);
-h2 = histogram(echo2,120,'FaceColor','r','Normalization','probability');
+h2 = histogram(echo2,120,'FaceColor','g','Normalization','probability');
 xlim([0.02 60]);
 ylim([0 0.05]);
 xlabel('Volume');
-clearvars echo1 echo2 iPCa1 iPCa2
+clearvars echo1 echo2
+
+% PCa versus FPSA/PSA ratio
+subplot(2,4,6)
+a = Dataset(iPCa1,3);
+a1 = Dataset(iPCa1,2);
+ifpsa1 = find(a);
+fpsa1 = a(ifpsa1,1);
+psa1 = a1(ifpsa1,1);
+ratio1 = fpsa1./psa1; 
+h1 = histogram(ratio1,20,'FaceColor','r','Normalization','probability');
+hold on 
+b = Dataset(iPCa2,3);
+b1 = Dataset(iPCa2,2);
+ifpsa2 = find(b);
+fpsa2 = b(ifpsa2,1);
+psa2 = b1(ifpsa2,1);
+ratio2 = fpsa2./psa2;
+h2 = histogram(ratio2,20,'FaceColor','g','Normalization','probability');
+xlabel('fPSA/PSA ratio');
+clearvars ifpsa1 fpsa1 psa1 ratio1 ifpsa2 fpsa2 psa2 ratio2 a b a1 b1
+
+% PCa versus PSA/volume ratio 
+subplot(2,4,7)
+a = Dataset(iPCa1,6);
+a1 = Dataset(iPCa1,2);
+ivolume1 = find(a)
+volume1 = a(ivolume1,1);
+psa1 = a1(ivolume1,1);
+vratio1 = psa1./volume1;
+h1 = histogram(vratio1,20,'FaceColor','r','Normalization','probability');
+hold on 
+b = Dataset(iPCa2,6);
+b1 = Dataset(iPCa2,2);
+ivolume2 = find(b)
+volume2 = b(ivolume2,1);
+psa2 = b1(ivolume2,1);
+vratio2 = psa2./volume2;
+h2 = histogram(vratio2,20,'FaceColor','g','Normalization','probability');
+xlabel('PSA/volume ratio');
+clearvars ivolume1 volume1 psa1 vratio1 ivolume2 volume2 psa2 vratio2...
+    iPCa1 iPCa2 a b a1 b1
+
 
 %% Further visualisation of data
 % Either uncomment the Visualize(1) or Visualize(2) for ALL subplots
