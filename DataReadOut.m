@@ -89,14 +89,15 @@ end
 freepsa = str2double(freepsa);
 
 % Deleting women from dataset
-ind=find(ismember(gender,'V'));
-for i=1:length(ind)
-        psaID(ind(i)-i+1)=[];
-        gender(ind(i)-i+1)=[];
-        age(ind(i)-i+1)=[];
-        psa(ind(i)-i+1)=[];
-        freepsa(ind(i)-i+1)=[];
-        datepsa(ind(i)-i+1)=[];
+indwomen=find(ismember(gender,'V'));
+womenIDs=unique(psaID(indwomen));
+for i=1:length(indwomen)
+        psaID(indwomen(i)-i+1)=[];
+        gender(indwomen(i)-i+1)=[];
+        age(indwomen(i)-i+1)=[];
+        psa(indwomen(i)-i+1)=[];
+        freepsa(indwomen(i)-i+1)=[];
+        datepsa(indwomen(i)-i+1)=[];
 end
 
 % Creating a struct of the data

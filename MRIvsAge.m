@@ -2,6 +2,7 @@ clearvars -except BIOPT MRI PSA ECHO DBC
 close all
 
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
+%[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
@@ -80,19 +81,19 @@ StdAgeAll=std(AgePerID);
 MeanAgeUseful=mean(age);
 StdAgeUseful=std(age);
 
-MeanAgeAllMRI=mean([age' notage']);
-StdAgeAllMRI=std([age' notage']);
+% MeanAgeAllMRI=mean([age' notage']);
+% StdAgeAllMRI=std([age' notage']);
 
 MeanAgeNotUseful=mean(notage);
 StdAgeNotUseful=std(notage);
 
-PSAnotusefulIDs=find(~ismember(PSAUniq,IDs));
-MeanAgePSAnotuseful=mean(AgePerID(PSAnotusefulIDs));
-StdAgePSAnotuseful=std(AgePerID(PSAnotusefulIDs));
-
-NoDataIDs=find(~ismember(PSAUniq,MRI.ID));
-MeanAgeNoData=mean(AgePerID(NoDataIDs));
-StdAgeNoData=std(AgePerID(NoDataIDs));
+% PSAnotusefulIDs=find(~ismember(PSAUniq,IDs));
+% MeanAgePSAnotuseful=mean(AgePerID(PSAnotusefulIDs));
+% StdAgePSAnotuseful=std(AgePerID(PSAnotusefulIDs));
+% 
+% NoDataIDs=find(~ismember(PSAUniq,MRI.ID));
+% MeanAgeNoData=mean(AgePerID(NoDataIDs));
+% StdAgeNoData=std(AgePerID(NoDataIDs));
 
 %%
 %Create a normal distribution plot per score (makes just a bit of sense
@@ -132,11 +133,11 @@ hold on
 Norm1=normpdf(x,MeanAgeAll,StdAgeAll);
 plot(x,Norm1)
 
-Norm2=normpdf(x,MeanAgePSAnotuseful,StdAgePSAnotuseful);
-plot(x,Norm2)
+% Norm2=normpdf(x,MeanAgePSAnotuseful,StdAgePSAnotuseful);
+% plot(x,Norm2)
 
-Norm3=normpdf(x,MeanAgeAllMRI,StdAgeAllMRI);
-plot(x,Norm3)
+% Norm3=normpdf(x,MeanAgeAllMRI,StdAgeAllMRI);
+% plot(x,Norm3)
 
 Norm4=normpdf(x,MeanAgeUseful,StdAgeUseful);
 plot(x,Norm4)
@@ -144,11 +145,12 @@ plot(x,Norm4)
 Norm5=normpdf(x,MeanAgeNotUseful,StdAgeNotUseful);
 plot(x,Norm5)
 
-Norm6=normpdf(x,MeanAgeNoData,StdAgeNoData);
-plot(x,Norm6)
+% Norm6=normpdf(x,MeanAgeNoData,StdAgeNoData);
+% plot(x,Norm6)
 
 hold off
 
 xlabel('Age [years]')
 title('Age distribution of different sets of data according to MRI data')
-legend('PSA: All','PSA: Not useful','MRI: All','MRI: Useful','MRI: Not useful','MRI: No data')
+% legend('PSA: All','PSA: Not useful','MRI: All','MRI: Useful','MRI: Not useful','MRI: No data')
+legend('PSA: All','MRI: Values','MRI: No values')

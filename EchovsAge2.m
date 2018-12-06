@@ -16,17 +16,27 @@ for i=1:length(PSAUniq)
     AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
 end
 
-%% Analysis of BIOPT dataset
+%Deleting women
+womenind=[5335,7860,10961];
+indwomen=find(ismember(ECHO.ID,womenind));
+
+for i=1:length(indwomen)
+    ECHO.ID(indwomen(i)-i+1)=[];
+    ECHO.volume(indwomen(i)-i+1)=[];
+    ECHO.date(indwomen(i)-i+1)=[];
+end
+
+%% Analysis of MRI dataset
 %Find all indices for useful entries in score dataset
-usefulEntryInd=find(~isnan(BIOPT.gleason));
+usefulEntryInd=find(~isnan(ECHO.volume));
 
 %Create three arrays new arrays for only the useful entries
-scores=BIOPT.gleason(usefulEntryInd);
-dates=BIOPT.date(usefulEntryInd);
-IDs=BIOPT.ID(usefulEntryInd);
+scores=ECHO.volume(usefulEntryInd);
+dates=ECHO.date(usefulEntryInd);
+IDs=ECHO.ID(usefulEntryInd);
 
 %Label naming
-lbl='Gleason';
+lbl='Prostate Volume [mL]';
 
 %Strip the PSA dataset to only consist of useful data
 PSAentryID=find(ismember(PSA.ID,IDs));
@@ -47,12 +57,12 @@ end
 
 %% Find ages for not useful entries
 %Find all indices for not useful entries in score dataset
-notusefulEntryInd=find(isnan(BIOPT.gleason));
+notusefulEntryInd=find(isnan(ECHO.volume));
 
 %Create three arrays new arrays for only the not useful entries
-notscores=BIOPT.gleason(notusefulEntryInd);
-notdates=BIOPT.date(notusefulEntryInd);
-notIDs=BIOPT.ID(notusefulEntryInd);
+notscores=ECHO.volume(notusefulEntryInd);
+notdates=ECHO.date(notusefulEntryInd);
+notIDs=ECHO.ID(notusefulEntryInd);
 
 %Strip the PSA dataset to only consist of not useful data
 notPSAentryID=find(ismember(PSA.ID,notIDs));
@@ -93,38 +103,10 @@ StdAgeNotUseful=std(notage);
 % StdAgeNoData=std(AgePerID(NoDataIDs));
 
 %%
-%Create a normal distribution plot per score (makes just a bit of sense
-%out of data).
-allscores=[0 3:10];
-meanage=zeros(size(allscores));
-standev=meanage;
+figure(1)
+
 x=18:.1:100;
 
-figure(1)
-hold on
-for i=1:length(allscores)
-    ind=find(scores==allscores(i));
-    meanage(i)=mean(age(ind));
-    standev=std(age(ind));
-    y=normpdf(x,meanage(i),standev);
-    plot(x,y)
-end
-hold off
-
-xlabel('Age [years]')
-title(['Normal distributions of age per ',lbl,' value.'])
-
-legend(string(allscores))
-
-figure(2)
-plot(allscores,meanage)
-
-xlabel(lbl)
-ylabel('Age [years]')
-title(['Mean age per ',lbl,' value.'])
-
-%%
-figure(3)
 hold on
 
 Norm1=normpdf(x,MeanAgeAll,StdAgeAll);
@@ -148,6 +130,6 @@ plot(x,Norm5)
 hold off
 
 xlabel('Age [years]')
-title('Age distribution of different sets of data according to biopt data')
-% legend('PSA: All','PSA: Not useful','BIOPT: All','BIOPT: Useful','BIOPT: Not useful','BIOPT: No data')
-legend('PSA: All','BIOPT: Values','BIOPT: No values')
+title('Age distribution of different sets of data according to ECHO data')
+% legend('PSA: All','PSA: Not useful','MRI: All','MRI: Useful','MRI: Not useful','MRI: No data')
+legend('PSA: All','ECHO: Values','ECHO: No values')
