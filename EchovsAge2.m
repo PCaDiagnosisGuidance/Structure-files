@@ -26,6 +26,8 @@ for i=1:length(indwomen)
     ECHO.date(indwomen(i)-i+1)=[];
 end
 
+clearvars womenind indwomen
+
 %% Analysis of MRI dataset
 %Find all indices for useful entries in score dataset
 usefulEntryInd=find(~isnan(ECHO.volume));
@@ -42,10 +44,12 @@ lbl='Prostate Volume [mL]';
 PSAentryID=find(ismember(PSA.ID,IDs));
 
 PSAID=PSA.ID(PSAentryID);
+PSAval=PSA.psa(PSAentryID);
 PSAage=PSA.age(PSAentryID);
 PSAdate=PSA.date(PSAentryID);
 
 age=zeros(size(scores));
+psaval=age;
 
 %Find corresponding age with score by using nearest date
 for i=1:length(scores)
@@ -53,7 +57,10 @@ for i=1:length(scores)
     diffdatearr=abs(PSAdate(ind)-dates(i));
     [~,indmin]=min(diffdatearr);
     age(i)=PSAage(ind(indmin));
+    psaval(i)=PSAval(ind(indmin));
 end
+
+clearvars ind indmin usefulEntryInd scores dates IDs PSAID PSAval PSAage PSAdate
 
 %% Find ages for not useful entries
 %Find all indices for not useful entries in score dataset
@@ -68,10 +75,12 @@ notIDs=ECHO.ID(notusefulEntryInd);
 notPSAentryID=find(ismember(PSA.ID,notIDs));
 
 notPSAID=PSA.ID(notPSAentryID);
+notPSAval=PSA.psa(notPSAentryID);
 notPSAage=PSA.age(notPSAentryID);
 notPSAdate=PSA.date(notPSAentryID);
 
 notage=zeros(size(notscores));
+notpsaval=notage;
 
 %Find corresponding age with score by using nearest date
 for i=1:length(notscores)
@@ -79,20 +88,32 @@ for i=1:length(notscores)
     diffdatearr=abs(notPSAdate(ind)-notdates(i));
     [~,indmin]=min(diffdatearr);
     notage(i)=notPSAage(ind(indmin));
+    notpsaval(i)=notPSAval(ind(indmin));
 end
+
+clearvars i ind indmin notusefulEntryInd notscores notdates notIDs notPSAID notPSAval notPSAage notPSAdate diffdatearr
 
 %% Calculation of means and std of different sets of data
 MeanAgeAll=mean(AgePerID);
 StdAgeAll=std(AgePerID);
 
+MeanPSAall=mean(PSAperID);
+StdPSAall=std(PSAperID);
+
 MeanAgeUseful=mean(age);
 StdAgeUseful=std(age);
+
+MeanPSAuseful=mean(psaval);
+StdPSAuseful=std(psaval);
 
 % MeanAgeAllMRI=mean([age' notage']);
 % StdAgeAllMRI=std([age' notage']);
 
 MeanAgeNotUseful=mean(notage);
 StdAgeNotUseful=std(notage);
+
+MeanPSAnotUseful=mean(notpsaval);
+StdPSAnotUseful=std(notpsaval);
 
 % PSAnotusefulIDs=find(~ismember(PSAUniq,IDs));
 % MeanAgePSAnotuseful=mean(AgePerID(PSAnotusefulIDs));
@@ -102,7 +123,7 @@ StdAgeNotUseful=std(notage);
 % MeanAgeNoData=mean(AgePerID(NoDataIDs));
 % StdAgeNoData=std(AgePerID(NoDataIDs));
 
-%%
+%% Plots
 figure(1)
 
 x=18:.1:100;
@@ -124,6 +145,8 @@ plot(x,Norm4)
 Norm5=normpdf(x,MeanAgeNotUseful,StdAgeNotUseful);
 plot(x,Norm5)
 
+clearvars Norm4 Norm5
+
 % Norm6=normpdf(x,MeanAgeNoData,StdAgeNoData);
 % plot(x,Norm6)
 
@@ -133,3 +156,28 @@ xlabel('Age [years]')
 title('Age distribution of different sets of data according to ECHO data')
 % legend('PSA: All','PSA: Not useful','MRI: All','MRI: Useful','MRI: Not useful','MRI: No data')
 legend('PSA: All','ECHO: Values','ECHO: No values')
+
+figure(2)
+
+x=0:.5:500;
+
+hold on
+
+Norm1=normpdf(x,MeanPSAall,StdPSAall);
+plot(x,Norm1)
+
+Norm2=normpdf(x,MeanPSAuseful,StdPSAuseful);
+plot(x,Norm2)
+
+Norm3=normpdf(x,MeanPSAnotUseful,StdPSAnotUseful);
+plot(x,Norm3)
+
+clearvars Norm1 Norm2 Norm3
+
+hold off
+
+xlabel('PSA [ug/L]')
+title('PSA distribution of different sets of data according to ECHO data')
+legend('PSA: All','ECHO: Values','ECHO: No values')
+
+clearvars x lbl
