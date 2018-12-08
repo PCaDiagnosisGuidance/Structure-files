@@ -55,7 +55,7 @@ Dataset = unique(Dataset, 'rows');
 
 
 %% Visualization of data
-% Eventueel mogelijk om 
+
 % PSA versus PI-RADS score
 figure(1);
 subplot(2,3,1);
