@@ -14,13 +14,13 @@ AllMethods=[methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO];
 
 
 maximumID=max(PSA.ID); %find the maximal patient ID (how many patients we have in the dataset)
-Examinations=zeros(maximumID, 100);
+Examinations=zeros(maximumID, 100); %overallocation of matrix to ensure it runs
 
 %Arrange the methods on the same order as the dates are sorted, so now you
 %get all the methods sorted on date. 
 for i=1:maximumID
     for j=1:size(AllMethods, 2)
-        AllMethods2(i, j)=AllMethods(i, IndexDates(i, j))
+        AllMethods2(i, j)=AllMethods(i, IndexDates(i, j));
     end
 end
 
@@ -38,15 +38,15 @@ switch lenghtOfCombinations
     NrCombinations=zeros(size(combinations, 1), 1);
     for i=1:maximumID
         AllMethods3=nonzeros(AllMethods2(i, :))';
-        for k=1:size(combinations, 1);
-            for j=1:(size(AllMethods3, 2));
-                if AllMethods3(j)==combinations(k, 1);
+        for k=1:size(combinations, 1)
+            for j=1:(size(AllMethods3, 2))
+                if AllMethods3(j)==combinations(k, 1)
                     NrCombinations(k)=NrCombinations(k)+1;
                 end
             end
         end
     end
-    allcombinations=sum(NrCombinations) %give the total number of combinations of two methods used
+    allcombinations=sum(NrCombinations); %give the total number of combinations of two methods used
     figure;
     bar(NrCombinations)
     title('How many times one method is used');
@@ -59,16 +59,16 @@ switch lenghtOfCombinations
     NrCombinations=zeros(size(combinations, 1), 1);
     for i=1:maximumID
         AllMethods3=nonzeros(AllMethods2(i, :))';
-        for k=1:size(combinations, 1);
-            for j=2:(size(AllMethods3, 2));
-                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) ;%&& AllMethods3(j+1)==combinations(k, 3) && AllMethods3(j+2)==combinations(k, 3);
+        for k=1:size(combinations, 1)
+            for j=2:(size(AllMethods3, 2))
+                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) %&& AllMethods3(j+1)==combinations(k, 3) && AllMethods3(j+2)==combinations(k, 3);
                     NrCombinations(k)=NrCombinations(k)+1;
                 end
             end
         end
     end
   
-    allcombinations=sum(NrCombinations) %give the total number of combinations of two methods used
+    allcombinations=sum(NrCombinations); %give the total number of combinations of two methods used
     figure;
     bar(NrCombinations)
     title('%how many times a combination of two methods is used');
@@ -81,15 +81,15 @@ switch lenghtOfCombinations
     NrCombinations=zeros(size(combinations, 1), 1);
     for i=1:maximumID
         AllMethods3=nonzeros(AllMethods2(i, :))';
-        for k=1:size(combinations, 1);
-            for j=2:(size(AllMethods3, 2)-1);
-                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) && AllMethods3(j+1)==combinations(k, 3);
+        for k=1:size(combinations, 1)
+            for j=2:(size(AllMethods3, 2)-1)
+                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) && AllMethods3(j+1)==combinations(k, 3)
                     NrCombinations(k)=NrCombinations(k)+1;
                 end
             end
         end
     end
-    allcombinations=sum(NrCombinations) %give the total number of combinations of two methods used
+    allcombinations=sum(NrCombinations); %give the total number of combinations of two methods used
     figure;
     bar(NrCombinations);
     title('%how many times a combination of three methods is used');

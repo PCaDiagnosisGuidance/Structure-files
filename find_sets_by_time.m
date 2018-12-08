@@ -21,6 +21,8 @@ AllDates=[patientDatesPSA patientDatesMRI patientDatesBIOPT patientDatesECHO];
 AllMethods=[methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO];
 [AllDates, IndexDates]=sort(AllDates, 2); %get the index the dates are sorted towards to use this for the sorting of the methods
 
+%Two new arrays for all dates with maximum and minimum allowed dates,
+%specifies the date window
 maxDates=AllDates+90;
 minDates=AllDates-30;
 
@@ -37,12 +39,13 @@ end
 methodsperMRI=zeros(maximumID, size(AllMethods2, 2));
 
 for i=1:maximumID
-    if sum(patientDatesMRI(i, :))>0
-        firstMRI=find(AllMethods2(i, :)==2, 1, 'first');
+    if sum(patientDatesMRI(i, :))>0 %Has patient had this diagnostic?
+        firstMRI=find(AllMethods2(i, :)==2, 1, 'first'); %Find first entry of diagnostic
         minDates=AllDates(i, firstMRI)-30;
         maxDates=AllDates(i, firstMRI)+90;
         for j=1:size(AllMethods2, 2)
-            if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=90) && (AllDates(i, j)>minDates);
+            %Check per date if diagnostic falls in window
+            if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=90) && (AllDates(i, j)>minDates)
                 methodsperMRI(i, j)=AllMethods2(i, j);
             end
         end
@@ -55,9 +58,9 @@ combinations=[1, 2; 1, 3; 1, 4; 2, 1; 2, 3; 2, 4; 3, 1; 3, 2; 3, 4; 4, 1; 4, 2; 
     NrCombinations=zeros(size(combinations, 1), 1);
     for i=1:maximumID
         AllMethods3=nonzeros(AllMethods2(i, :))';
-        for k=1:size(combinations, 1);
-            for j=2:(size(AllMethods3, 2));
-                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) ;%&& AllMethods3(j+1)==combinations(k, 3) && AllMethods3(j+2)==combinations(k, 3);
+        for k=1:size(combinations, 1)
+            for j=2:(size(AllMethods3, 2))
+                if AllMethods3(j-1)==combinations(k, 1) && AllMethods3(j)==combinations(k, 2) %&& AllMethods3(j+1)==combinations(k, 3) && AllMethods3(j+2)==combinations(k, 3);
                     NrCombinations(k)=NrCombinations(k)+1;
                 end
             end
@@ -77,7 +80,7 @@ combinations=[1, 2; 1, 3; 1, 4; 2, 1; 2, 3; 2, 4; 3, 1; 3, 2; 3, 4; 4, 1; 4, 2; 
 %      end
 % end
 %     
-allcombinations=sum(NrCombinations) %give the total number of combinations of two methods used
+allcombinations=sum(NrCombinations); %give the total number of combinations of two methods used
 figure;
 bar(NrCombinations);
 title('%how many times a combination of three methods is used');
