@@ -90,14 +90,19 @@ if ~Outliers
     totalDiffNoCancer=totalDiffNoCancer(~isoutlier(totalDiffNoCancer,'mean'));
 end
 
-figure(2)
 % plot(1:length(totalDiffCancer),totalDiffCancer,'r',...
 %     1:length(totalDiffNoCancer),totalDiffNoCancer,'g')
 
-hold on
-scatter(totalDiffCancer,2*ones(size(totalDiffCancer)),'r')
-scatter(totalDiffNoCancer,ones(size(totalDiffNoCancer)),'g')
-% xlim([-.05 .05])
-ylim([.5 2.5])
-hold off
+% hold on
+% scatter(totalDiffCancer,2*ones(size(totalDiffCancer)),'r')
+% scatter(totalDiffNoCancer,ones(size(totalDiffNoCancer)),'g')
+% % xlim([-.05 .05])
+% ylim([.5 2.5])
+% hold off
+
+figure(2)
+statsCancer=DispersionAnalysis(totalDiffCancer,'Normplot');
+
+figure(3)
+statsNoCancer=DispersionAnalysis(totalDiffNoCancer,'Normplot');
 
