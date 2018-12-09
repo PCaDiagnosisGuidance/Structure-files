@@ -104,8 +104,10 @@ figure(2)
 subplot(1,2,1)
 statsCancer=DispersionAnalysis(totalDiffCancer,'Normplot');
 title('Normal prob. plot of data of patients with cancer')
+xlabel('\DeltaPSA/day for first to last measurement')
 
 subplot(1,2,2)
 statsNoCancer=DispersionAnalysis(totalDiffNoCancer,'Normplot');
 title('Normal prob. plot of data of patients without cancer')
+xlabel('\DeltaPSA/day for first to last measurement')
 
