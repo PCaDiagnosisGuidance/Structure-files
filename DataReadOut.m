@@ -252,7 +252,7 @@ echodate = datenum(echodate);
 % Gleason values completion, set all unknown and negative values to 0
 for i=1:length(volume)
     if strcmp(volume(i,1),'NA') == 1 
-        volume(i,1) = {'0'}; 
+        volume(i,1) = {'NaN'}; 
     elseif strcmp(volume(i,1),'?') == 1
         volume(i,1) = {'NaN'};
     elseif strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen

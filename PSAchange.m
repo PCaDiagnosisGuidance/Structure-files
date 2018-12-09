@@ -9,9 +9,9 @@ close all
 %Specification of date window, psa range of first measurement and analysis
 %with or without outliers (by mean, not median)
 
-datewindow=[90];  %Leave empty for no date window
+datewindow=[120];  %Leave empty for no date window
 psarange=[4 10];    %Use [-Inf Inf] to select whole range
-Outliers=true;   %true for analysis including outliers, false for without
+Outliers=false;   %true for analysis including outliers, false for without
 
 %% Script
 PSAUniq=unique(PSA.ID);
@@ -101,8 +101,11 @@ end
 % hold off
 
 figure(2)
+subplot(1,2,1)
 statsCancer=DispersionAnalysis(totalDiffCancer,'Normplot');
+title('Normal prob. plot of data of patients with cancer')
 
-figure(3)
+subplot(1,2,2)
 statsNoCancer=DispersionAnalysis(totalDiffNoCancer,'Normplot');
+title('Normal prob. plot of data of patients without cancer')
 

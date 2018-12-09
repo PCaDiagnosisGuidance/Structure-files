@@ -181,3 +181,35 @@ title('PSA distribution of different sets of data according to ECHO data')
 legend('PSA: All','ECHO: Values','ECHO: No values')
 
 clearvars x lbl
+
+figure(3)
+subplot(1,3,1)
+AgeAll=DispersionAnalysis(AgePerID,'Normplot');
+title('Normal prob. plot of ages of all patients')
+xlabel('Age [years]')
+
+subplot(1,3,2)
+AgeValues=DispersionAnalysis(age,'Normplot');
+title('NPP of ages corresponding to an entry value in ECHO')
+xlabel('Age [years]')
+
+subplot(1,3,3)
+AgeNoVals=DispersionAnalysis(notage,'Normplot');
+title('NPP plot of ages corresponding to a NaN value in ECHO')
+xlabel('Age [years]')
+
+figure(4)
+subplot(1,3,1)
+PSAall=DispersionAnalysis(PSAperID,'Normplot');
+title('Normal prob. plot of PSA values of all patients')
+xlabel('PSA concentration [ug/L]')
+
+subplot(1,3,2)
+PSAvalues=DispersionAnalysis(psaval,'Normplot');
+title('NPP of PSA values corresponding to an entry value in ECHO')
+xlabel('PSA concentration [ug/L]')
+
+subplot(1,3,3)
+PSAnoVals=DispersionAnalysis(notpsaval,'Normplot');
+title('NPP of PSA values corresponding to a NaN value in ECHO')
+xlabel('PSA concentration [ug/L]')
