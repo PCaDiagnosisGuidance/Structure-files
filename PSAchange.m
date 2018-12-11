@@ -82,7 +82,7 @@ end
 hold off
 
 title('Change rate of PSA per day after every measurement for all patients meeting criteria')
-ylabel('Change rate [ug L^{-1} day^{-1}]')
+ylabel('Change rate [\mug L^{-1} day^{-1}]')
 xlabel('Measurement number')
 
 if ~Outliers
