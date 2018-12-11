@@ -15,8 +15,8 @@ statsArray=[statsStruct.size; statsStruct.mean; statsStruct.std; statsStruct.iqr
 
 normplot(input)
     statType={'size dataset: ','mean: ','std: ','iqr: ','kurtosis: ','skewness: '};
-    text(.02,.85,statType,'Units','normalized')
-    text(.25,.85,num2str(statsArray),'Units','normalized')
+    text(.57,.2,statType,'Units','normalized')
+    text(.80,.2,num2str(statsArray),'Units','normalized')
 
 % if strcmp(varargin,'Normplot')
 %     normplot(input)
