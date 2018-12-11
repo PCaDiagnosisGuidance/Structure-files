@@ -1,4 +1,7 @@
-function [patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, NrOfDetectionsPSA, NrOfDetectionsMRI, NrOfDetectionsBIOPT, NrOfDetectionsECHO,  methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC)    
+function [patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, ...
+    NrOfDetectionsPSA, NrOfDetectionsMRI, NrOfDetectionsBIOPT, NrOfDetectionsECHO,  ...
+    methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, ...
+    ValuePSA, ValueMRI, ValueBIOPT, ValueECHO]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC)    
 
 maximumID=max(PSA.ID);
 % patientDatesPSA=zeros(maximumID, 100);
@@ -19,29 +22,32 @@ for i=1:maximumID
     %make a matrix of dates for PSA
     DateNrPSA=find(PSA.ID==i);
     NrOfDetectionsPSA(i)=length(DateNrPSA);
-    datesPSA=sort(PSA.date(DateNrPSA)');
+    datesPSA=PSA.date(DateNrPSA)';
     patientDatesPSA(i, 1:length(datesPSA))=datesPSA;
     methodsPSA(i, 1:length(datesPSA))=ones(1, length(datesPSA));
-    %end
+    ValuePSA(i, 1:length(datesPSA))=PSA.psa(DateNrPSA)';
     
     %make a matrix of dates for MRI
     DateNrMRI=find(MRI.ID==i);
     NrOfDetectionsMRI(i)=length(DateNrMRI);
-    datesMRI=sort(MRI.date(DateNrMRI)');
+    datesMRI=MRI.date(DateNrMRI)';
     patientDatesMRI(i, 1:length(datesMRI))=datesMRI;
     methodsMRI(i, 1:length(datesMRI))=2*ones(1, length(datesMRI));
+    ValueMRI(i, 1:length(datesMRI))=MRI.pirads(DateNrMRI)';
     
     %make a matrix of dates for BIOPT
     DateNrBIOPT=find(BIOPT.ID==i);
     NrOfDetectionsBIOPT(i)=length(DateNrBIOPT);
-    datesBIOPT=sort(BIOPT.date(DateNrBIOPT)');
+    datesBIOPT=BIOPT.date(DateNrBIOPT)';
     patientDatesBIOPT(i, 1:length(datesBIOPT))=datesBIOPT;
     methodsBIOPT(i, 1:length(datesBIOPT))=3*ones(1, length(datesBIOPT));
+    ValueBIOPT(i, 1:length(datesBIOPT))=BIOPT.gleason(DateNrBIOPT)';
     
     %make a matrix of dates for ECHO
     DateNrECHO=find(ECHO.ID==i);
     NrOfDetectionsECHO(i)=length(DateNrECHO);
-    datesECHO=sort(ECHO.date(DateNrECHO)');
+    datesECHO=ECHO.date(DateNrECHO)';
     patientDatesECHO(i, 1:length(datesECHO))=datesECHO;
     methodsECHO(i, 1:length(datesECHO))=4*ones(1, length(datesECHO));
+    ValueECHO(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 end
