@@ -76,9 +76,11 @@ elseif CurvefitType == 3
     % find all PSA values which are higher than 4 and lower than 10
     ipsa = find(Dataset(:,2)>=4 & Dataset(:,2)<=10);
     psa = Dataset(ipsa,2);
-    PCa = Dataset(ipsa,7); % corresponding PCa diagnosis
+    fpsa = Dataset(ipsa,3);
     mri = Dataset(ipsa,4);
     biopt = Dataset(ipsa,5);
+    volume = Dataset(ipsa,6);
+    PCa = Dataset(ipsa,7); % corresponding PCa diagnosis
     
     clear ipsa Dataset
     
