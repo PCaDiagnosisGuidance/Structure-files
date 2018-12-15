@@ -11,7 +11,7 @@ foldername = 'C:\Users\s165635\Documents\MATLAB\OGO Computational Biology\OGO gr
 % CurvefitType = 2 --> Curve fitting for timeslot values
 % CurvefitType = 3 --> Curve fitting for PSA values between 4 and 10 
 
-CurvefitType = 2; 
+CurvefitType = 1; 
 
 if CurvefitType == 1
     %% Curve fitting for the overall datasets
