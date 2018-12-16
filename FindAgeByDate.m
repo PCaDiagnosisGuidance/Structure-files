@@ -1,4 +1,4 @@
-function [age,psaval]=FindAgeByDate(PSA,scores,dates,IDs)
+function [age,psaval]=FindAgeByDate(PSA,scores,dates,IDs,varargin)
 %Find entry IDs in PSA database
 PSAentryID=find(ismember(PSA.ID,IDs));
 
@@ -15,7 +15,13 @@ for i=1:length(scores)
     ind=find(PSAID==IDs(i));
     diffdatearr=abs(PSAdate(ind)-dates(i));
     [~,indmin]=min(diffdatearr);
-    age(i)=PSAage(ind(indmin));
-    psaval(i)=PSAval(ind(indmin));
+    
+    if ~isempty(varargin) && PSAval(ind(indmin)) >= varargin{1}(1) && PSAval(ind(indmin)) < varargin{1}(1)
+        age(i)=PSAage(ind(indmin));
+        psaval(i)=PSAval(ind(indmin));
+    elseif isempty(varargin)
+        age(i)=PSAage(ind(indmin));
+        psaval(i)=PSAval(ind(indmin));
+    end
 end
 end

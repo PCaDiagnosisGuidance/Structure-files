@@ -4,6 +4,10 @@ close all
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
+%set(gcf,'Position',[100,100,1600,400])
+%savefig('name.fig')
+%saveas(gcf,'name.jpg')
+
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
 PSAUniq=unique(PSA.ID);
