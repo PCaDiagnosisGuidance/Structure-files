@@ -4,9 +4,10 @@ close all
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
-%set(gcf,'Position',[100,100,1600,400])
-%savefig('name.fig')
-%saveas(gcf,'name.jpg')
+%% Inputs
+FirstInsteadMean=false;
+PSAwindow=[-Inf Inf]; %[4 10] [-Inf Inf]
+Outliers=false;
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
@@ -14,10 +15,19 @@ PSAUniq=unique(PSA.ID);
 PSAperID=zeros(size(PSAUniq));
 AgePerID=PSAperID;
 
-%Calculating means per patient
-for i=1:length(PSAUniq)
-    PSAperID(i)=mean(PSA.psa(PSA.ID==PSAUniq(i)));
-    AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
+if FirstInsteadMean
+    %Calculating first PSA val per patient
+    for i=1:length(PSAUniq)
+        PSAarr=PSA.psa(PSA.ID==PSAUniq(i));
+        PSAperID(i)=PSAarr(1);
+        AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
+    end
+else
+    %Calculating means per patient
+    for i=1:length(PSAUniq)
+        PSAperID(i)=mean(PSA.psa(PSA.ID==PSAUniq(i)));
+        AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
+    end
 end
 
 %Deleting women
@@ -41,7 +51,7 @@ scores=MRI.pirads(usefulEntryInd);
 dates=MRI.date(usefulEntryInd);
 IDs=MRI.ID(usefulEntryInd);
 
-[MRIvalAge,MRIvalPSA]=FindAgeByDate(PSA,scores,dates,IDs);
+[MRIvalAge,MRIvalPSA]=FindAgeByDateAndPSA(PSA,scores,dates,IDs,PSAwindow);
 
 %Find all indices for not useful entries in score dataset
 notusefulEntryInd=find(isnan(MRI.pirads));
@@ -51,12 +61,12 @@ notscores=MRI.pirads(notusefulEntryInd);
 notdates=MRI.date(notusefulEntryInd);
 notIDs=MRI.ID(notusefulEntryInd);
 
-[MRInoValAge,MRInoValPSA]=FindAgeByDate(PSA,notscores,notdates,notIDs);
+[MRInoValAge,MRInoValPSA]=FindAgeByDateAndPSA(PSA,notscores,notdates,notIDs,PSAwindow);
 
-MRInoDataIDs=find(~ismember(PSAUniq,MRI.ID));
+MRInoDataIDs=~ismember(PSAUniq,MRI.ID);
 
-MRInoDataAge=AgePerID(MRInoDataIDs);
-MRInoDataPSA=PSAperID(MRInoDataIDs);
+MRInoDataAge=AgePerID(MRInoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
+MRInoDataPSA=PSAperID(MRInoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
 
 %% Analysis of BIOPT dataset
 %Find all indices for useful entries in score dataset
@@ -67,7 +77,7 @@ scores=BIOPT.gleason(usefulEntryInd);
 dates=BIOPT.date(usefulEntryInd);
 IDs=BIOPT.ID(usefulEntryInd);
 
-[BIOPTvalAge,BIOPTvalPSA]=FindAgeByDate(PSA,scores,dates,IDs);
+[BIOPTvalAge,BIOPTvalPSA]=FindAgeByDateAndPSA(PSA,scores,dates,IDs,PSAwindow);
 
 %Find all indices for not useful entries in score dataset
 notusefulEntryInd=find(isnan(BIOPT.gleason));
@@ -77,12 +87,12 @@ notscores=BIOPT.gleason(notusefulEntryInd);
 notdates=BIOPT.date(notusefulEntryInd);
 notIDs=BIOPT.ID(notusefulEntryInd);
 
-[BIOPTnoValAge,BIOPTnoValPSA]=FindAgeByDate(PSA,notscores,notdates,notIDs);
+[BIOPTnoValAge,BIOPTnoValPSA]=FindAgeByDateAndPSA(PSA,notscores,notdates,notIDs,PSAwindow);
 
-BIOPTnoDataIDs=find(~ismember(PSAUniq,BIOPT.ID));
+BIOPTnoDataIDs=~ismember(PSAUniq,BIOPT.ID);
 
-BIOPTnoDataAge=AgePerID(BIOPTnoDataIDs);
-BIOPTnoDataPSA=PSAperID(BIOPTnoDataIDs);
+BIOPTnoDataAge=AgePerID(BIOPTnoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
+BIOPTnoDataPSA=PSAperID(BIOPTnoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
 
 %% Analysis of ECHO dataset
 %Find all indices for useful entries in score dataset
@@ -93,7 +103,7 @@ scores=ECHO.volume(usefulEntryInd);
 dates=ECHO.date(usefulEntryInd);
 IDs=ECHO.ID(usefulEntryInd);
 
-[ECHOvalAge,ECHOvalPSA]=FindAgeByDate(PSA,scores,dates,IDs);
+[ECHOvalAge,ECHOvalPSA]=FindAgeByDateAndPSA(PSA,scores,dates,IDs,PSAwindow);
 
 %Find all indices for not useful entries in score dataset
 notusefulEntryInd=find(isnan(ECHO.volume));
@@ -103,21 +113,42 @@ notscores=ECHO.volume(notusefulEntryInd);
 notdates=ECHO.date(notusefulEntryInd);
 notIDs=ECHO.ID(notusefulEntryInd);
 
-[ECHOnoValAge,ECHOnoValPSA]=FindAgeByDate(PSA,notscores,notdates,notIDs);
+[ECHOnoValAge,ECHOnoValPSA]=FindAgeByDateAndPSA(PSA,notscores,notdates,notIDs,PSAwindow);
 
-ECHOnoDataIDs=find(~ismember(PSAUniq,ECHO.ID));
+ECHOnoDataIDs=~ismember(PSAUniq,ECHO.ID);
 
-ECHOnoDataAge=AgePerID(ECHOnoDataIDs);
-ECHOnoDataPSA=PSAperID(ECHOnoDataIDs);
+ECHOnoDataAge=AgePerID(ECHOnoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
+ECHOnoDataPSA=PSAperID(ECHOnoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
+
+%%Remove outliers if true
+if ~Outliers
+    [AgePerID,PSAperID,...
+    MRIvalAge,MRIvalPSA,MRInoValAge,MRInoValPSA,MRInoDataAge,MRInoDataPSA,...
+    BIOPTvalAge,BIOPTvalPSA,BIOPTnoValAge,BIOPTnoValPSA,BIOPTnoDataAge,BIOPTnoDataPSA,...
+    ECHOvalAge,ECHOvalPSA,ECHOnoValAge,ECHOnoValPSA,ECHOnoDataAge,ECHOnoDataPSA]=RemoveOutliers(AgePerID,PSAperID,...
+    MRIvalAge,MRIvalPSA,MRInoValAge,MRInoValPSA,MRInoDataAge,MRInoDataPSA,...
+    BIOPTvalAge,BIOPTvalPSA,BIOPTnoValAge,BIOPTnoValPSA,BIOPTnoDataAge,BIOPTnoDataPSA,...
+    ECHOvalAge,ECHOvalPSA,ECHOnoValAge,ECHOnoValPSA,ECHOnoDataAge,ECHOnoDataPSA);
+end
 
 %% Plots
 figure(1)
-DispersionAnalysis(AgePerID);
+MultipleDispersionAnalyses(AgePerID,PSAperID);
+set(gcf,'Position',[100,100,1600,400])
+
+subplot(1,2,1)
 title('Dispersion of ages of all patients')
+
+subplot(1,2,2)
+title('Dispersion of PSA values of all patients')
+
+saveas(gcf,'1 Age and PSA All.jpg')
+saveas(gcf,'1 Age and PSA All.fig')
 
 %% MRI Age
 figure(2)
 MRIageStats=MultipleDispersionAnalyses(MRIvalAge,MRInoValAge,MRInoDataAge);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('MRI age dataset which corresponds with number entry')
@@ -128,9 +159,13 @@ title('MRI age dataset which corresponds with no number entry')
 subplot(1,3,3)
 title('MRI age dataset which corresponds with no entries in MRI')
 
+saveas(gcf,'2 Age MRI.jpg')
+saveas(gcf,'2 Age MRI.fig')
+
 %% MRI PSA
 figure(3)
 MRIpsaStats=MultipleDispersionAnalyses(MRIvalPSA,MRInoValPSA,MRInoDataPSA);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('MRI PSA dataset which corresponds with number entry')
@@ -141,9 +176,13 @@ title('MRI PSA dataset which corresponds with no number entry')
 subplot(1,3,3)
 title('MRI PSA dataset which corresponds with no entries in MRI')
 
+saveas(gcf,'3 PSA MRI.jpg')
+saveas(gcf,'3 PSA MRI.fig')
+
 %% BIOPT Age
 figure(4)
 BIOPTageStats=MultipleDispersionAnalyses(BIOPTvalAge,BIOPTnoValAge,BIOPTnoDataAge);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('BIOPT age dataset which corresponds with number entry')
@@ -154,9 +193,13 @@ title('BIOPT age dataset which corresponds with no number entry')
 subplot(1,3,3)
 title('BIOPT age dataset which corresponds with no entries in BIOPT')
 
+saveas(gcf,'4 Age BIOPT.jpg')
+saveas(gcf,'4 Age BIOPT.fig')
+
 %% BIOPT PSA
 figure(5)
 BIOPTpsaStats=MultipleDispersionAnalyses(BIOPTvalPSA,BIOPTnoValPSA,BIOPTnoDataPSA);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('BIOPT PSA dataset which corresponds with number entry')
@@ -167,9 +210,13 @@ title('BIOPT PSA dataset which corresponds with no number entry')
 subplot(1,3,3)
 title('BIOPT PSA dataset which corresponds with no entries in BIOPT')
 
+saveas(gcf,'5 PSA BIOPT.jpg')
+saveas(gcf,'5 PSA BIOPT.fig')
+
 %% ECHO Age
 figure(6)
 ECHOageStats=MultipleDispersionAnalyses(ECHOvalAge,ECHOnoValAge,ECHOnoDataAge);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('ECHO age dataset which corresponds with number entry')
@@ -180,9 +227,13 @@ title('ECHO age dataset which corresponds with no number entry')
 subplot(1,3,3)
 title('ECHO age dataset which corresponds with no entries in ECHO')
 
+saveas(gcf,'6 Age ECHO.jpg')
+saveas(gcf,'6 Age ECHO.fig')
+
 %% ECHO PSA
 figure(7)
 ECHOpsaStats=MultipleDispersionAnalyses(ECHOvalPSA,ECHOnoValPSA,ECHOnoDataPSA);
+set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,3,1)
 title('ECHO PSA dataset which corresponds with number entry')
@@ -192,3 +243,6 @@ title('ECHO PSA dataset which corresponds with no number entry')
 
 subplot(1,3,3)
 title('ECHO PSA dataset which corresponds with no entries in ECHO')
+
+saveas(gcf,'7 PSA ECHO.jpg')
+saveas(gcf,'7 PSA ECHO.fig')
