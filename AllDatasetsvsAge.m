@@ -5,8 +5,8 @@ close all
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
 %% Inputs
-FirstInsteadMean=false;
-PSAwindow=[-Inf Inf]; %[4 10] [-Inf Inf]
+FirstInsteadMean=true;
+PSAwindow=[4 10]; %[4 10] [-Inf Inf]
 Outliers=false;
 
 %% Creation of PSA per ID dataset
@@ -29,6 +29,9 @@ else
         AgePerID(i)=mean(PSA.age(PSA.ID==PSAUniq(i)));
     end
 end
+
+AgePerIDforPlot=AgePerID(PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
+PSAperIDforPlot=PSAperID(PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
 
 %Deleting women
 womenind=[5335,7860,10961];
@@ -122,10 +125,10 @@ ECHOnoDataPSA=PSAperID(ECHOnoDataIDs & PSAperID >= PSAwindow(1) & PSAperID < PSA
 
 %%Remove outliers if true
 if ~Outliers
-    [AgePerID,PSAperID,...
+    [AgePerID,PSAperID,AgePerIDforPlot,PSAperIDforPlot,...
     MRIvalAge,MRIvalPSA,MRInoValAge,MRInoValPSA,MRInoDataAge,MRInoDataPSA,...
     BIOPTvalAge,BIOPTvalPSA,BIOPTnoValAge,BIOPTnoValPSA,BIOPTnoDataAge,BIOPTnoDataPSA,...
-    ECHOvalAge,ECHOvalPSA,ECHOnoValAge,ECHOnoValPSA,ECHOnoDataAge,ECHOnoDataPSA]=RemoveOutliers(AgePerID,PSAperID,...
+    ECHOvalAge,ECHOvalPSA,ECHOnoValAge,ECHOnoValPSA,ECHOnoDataAge,ECHOnoDataPSA]=RemoveOutliers(AgePerID,PSAperID,AgePerIDforPlot,PSAperIDforPlot,...
     MRIvalAge,MRIvalPSA,MRInoValAge,MRInoValPSA,MRInoDataAge,MRInoDataPSA,...
     BIOPTvalAge,BIOPTvalPSA,BIOPTnoValAge,BIOPTnoValPSA,BIOPTnoDataAge,BIOPTnoDataPSA,...
     ECHOvalAge,ECHOvalPSA,ECHOnoValAge,ECHOnoValPSA,ECHOnoDataAge,ECHOnoDataPSA);
@@ -133,7 +136,7 @@ end
 
 %% Plots
 figure(1)
-MultipleDispersionAnalyses(AgePerID,PSAperID);
+MultipleDispersionAnalyses(AgePerIDforPlot,PSAperIDforPlot);
 set(gcf,'Position',[100,100,1600,400])
 
 subplot(1,2,1)

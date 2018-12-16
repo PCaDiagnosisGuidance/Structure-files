@@ -10,7 +10,7 @@ close all
 %with or without outliers (by mean, not median)
 
 datewindow=[120];  %Leave empty for no date window
-psarange=[4 10];    %Use [-Inf Inf] to select whole range
+psarange=[0 4];    %Use [-Inf Inf] to select whole range
 Outliers=false;   %true for analysis including outliers, false for without
 
 %% Script
