@@ -136,7 +136,7 @@ mridate = datenum(mridate);
 
 % PI-RADS values completion, set all unknown and negative values to 0
 for i=1:length(pirads)
-    if strcmp(pirads(i,1),'neg') == 1 || strcmp(pirads(i,1),'geen')== 1 ...
+    if strcmp(pirads(i,1),'neg') == 1 || strcmp(pirads(i,1),'geen')== 1
         pirads(i,1) = {'0'}; 
     elseif strcmp(pirads(i,1),'?') == 1
         pirads(i,1) = {'?'};
