@@ -16,15 +16,15 @@ close all
 
 %find the Dates per patient per method and how many times it is detected. 
 %Also find out which method is used at which time
-[patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, patientDatesFreePSA, ...
-    NrOfDetectionsPSA, NrOfDetectionsMRI, NrOfDetectionsBIOPT, NrOfDetectionsECHO...
- ,methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, methodsFreePSA,...
- ValuePSA, ValueMRI, ValueBIOPT, ValueECHO, ValueFreePSA]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC);    
+[patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, patientDatesFreePSA, patientDatesDBC, ...
+    ~, ~, ~, ~...
+ ,methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, methodsFreePSA, methodsDBC,...
+ ValuePSA, ValueMRI, ValueBIOPT, ValueECHO, ValueFreePSA, ValueDBC]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC);    
 
 %Making a list of all the dates sorted
-AllDates=[patientDatesPSA patientDatesMRI patientDatesBIOPT patientDatesECHO patientDatesFreePSA];
-AllMethods=[methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, methodsFreePSA];
-AllValues=[ValuePSA, ValueMRI, ValueBIOPT, ValueECHO, ValueFreePSA];
+AllDates=[patientDatesPSA patientDatesMRI patientDatesBIOPT patientDatesECHO patientDatesFreePSA, patientDatesDBC];
+AllMethods=[methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, methodsFreePSA,methodsDBC];
+AllValues=[ValuePSA, ValueMRI, ValueBIOPT, ValueECHO, ValueFreePSA, ValueDBC];
 [AllDates, IndexDates]=sort(AllDates, 2); %get the index the dates are sorted towards to use this for the sorting of the methods
 
 maximumID=max(PSA.ID); %find the maximal patient ID (how many patients we have in the dataset)

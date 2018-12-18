@@ -1,8 +1,8 @@
 function NrCombinations=findOrderMethods(methodsperMRI, scalar)
 %This function determines how many times a combination of different
 %techniques is used. 
-%It can be a combination of all possible four techniques in a order of 2, 3
-%or 4
+%It can be a combination of all possible four techniques and the DBC in an
+%order of 2, 3 or 4
 %scalar=2, only orders of two methods performed after each other
 %scalar=3, only orders of three methods performed after each other
 %scalar=4, only orders of four methods performed after each other
