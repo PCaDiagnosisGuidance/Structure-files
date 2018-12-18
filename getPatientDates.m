@@ -1,7 +1,7 @@
-function [patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, ...
+function [patientDatesPSA, patientDatesMRI, patientDatesBIOPT, patientDatesECHO, patientDatesFreePSA,...
     NrOfDetectionsPSA, NrOfDetectionsMRI, NrOfDetectionsBIOPT, NrOfDetectionsECHO,  ...
-    methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, ...
-    ValuePSA, ValueMRI, ValueBIOPT, ValueECHO]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC)    
+    methodsPSA,  methodsMRI,  methodsBIOPT,  methodsECHO, methodsFreePSA...
+    ValuePSA, ValueMRI, ValueBIOPT, ValueECHO, ValueFreePSA]=getPatientDates(PSA,MRI,BIOPT,ECHO,DBC)    
 
 maximumID=max(PSA.ID);
 % patientDatesPSA=zeros(maximumID, 100);
@@ -27,6 +27,8 @@ for i=1:maximumID
     methodsPSA(i, 1:length(datesPSA))=ones(1, length(datesPSA));
     ValuePSA(i, 1:length(datesPSA))=PSA.psa(DateNrPSA)';
     
+    ValueFreePSA(i, 1:length(datesPSA))=PSA.freepsa(DateNrPSA)';
+    
     %make a matrix of dates for MRI
     DateNrMRI=find(MRI.ID==i);
     NrOfDetectionsMRI(i)=length(DateNrMRI);
@@ -51,3 +53,17 @@ for i=1:maximumID
     methodsECHO(i, 1:length(datesECHO))=4*ones(1, length(datesECHO));
     ValueECHO(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 end
+
+patientDatesFreePSA=zeros(maximumID, size(patientDatesPSA, 2));
+for i=1:size(ValueFreePSA, 1)
+    for j=1:size(ValueFreePSA, 2)
+        if ValueFreePSA(i, j)>0
+            patientDatesFreePSA(i, j)=patientDatesPSA(i, j);
+            methodsFreePSA(i, j)=5;
+        else
+            patientDatesFreePSA(i, j)=0;
+            methodsFreePSA(i, j)=0;
+        end
+    end
+end
+    
