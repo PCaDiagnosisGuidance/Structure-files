@@ -8,11 +8,11 @@ maximumID=max(PSA.ID);
 % patientDatesMRI=zeros(maximumID, 100);
 % patientDatesBIOPT=zeros(maximumID, 100);
 % patientDatesECHO=zeros(maximumID, 100);
-NrOfDetectionsPSA=zeros(maximumID, 1); % deze worden sowieso niet gebruikt vm
-NrOfDetectionsMRI = zeros(maximumID,1); 
-NrOfDetectionsBIOPT = zeros(maximumID,1);
-NrOfDetectionsECHO = zeros(maximumID,1);
-NrOfDetectionsDBC = zeros(maximumID,1);
+% NrOfDetectionsPSA=zeros(maximumID, 1); % deze worden sowieso niet gebruikt vm
+% NrOfDetectionsMRI = zeros(maximumID,1); 
+% NrOfDetectionsBIOPT = zeros(maximumID,1);
+% NrOfDetectionsECHO = zeros(maximumID,1);
+% NrOfDetectionsDBC = zeros(maximumID,1);
 % NrOfDetectionsFPSA = zeros(maximumID,1); waarom bestaat deze niet? 
 % 
 % methodsPSA=zeros(maximumID, 100);
