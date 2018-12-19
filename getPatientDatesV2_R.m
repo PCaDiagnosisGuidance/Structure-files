@@ -7,7 +7,8 @@ function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesEC
     ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValueDBC1, ...
     ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValueDBC2, ...
     ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesV2_R(PSA,MRI,BIOPT,ECHO,DBC)    
-% pre-allocation of patientdates
+% pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA=<4, 2 is 4<PSA=<10 and 3 is PSA>10) 
+% This is necessary because the three different groups have different sizes of matrices. Later on they will have to be concatenated.
 maximumID=max(PSA.ID);
 patientDatesPSA1=zeros(maximumID, 100);
 patientDatesMRI1=zeros(maximumID, 100);
@@ -75,13 +76,14 @@ ValueFreePSA3=zeros(maximumID, 100);
 ValueDBC3=zeros(maximumID, 100);
 
 
-% Create a matrix of the dates an examination is done per patientnumber 
-% (one row = one patient)
+% Find the indices of the patients which have a PSA value which belongs to one of the three groups
 
 UnderFourPSA = find(PSA.psa<=4);
 FourToTenPSA = find(PSA.psa>4 & PSA.psa<=10);
 AboveTenPSA = find(PSA.psa>10);
 
+% Create a matrix of the dates an examination is done per patientnumber 
+% (one row = one patient)
 
 for i=1:maximumID
 %   for i=1:length(techniques)
@@ -90,7 +92,7 @@ for i=1:maximumID
     DateNrPSA=find(PSA.ID==i);
     % Create a condition here on wether or not the respective patient has a
     % PSA value under 4, between 4 and 10 or higher than 10. Based on this
-    % it puts the values in one of the three sets of matrices.
+    % it puts the values in one of the three sets of matrices (1,2 or 3).
     if ismember(DateNrPSA,UnderFourPSA) == 1
        
         NrOfDetectionsPSA1(i)=length(DateNrPSA);
