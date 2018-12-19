@@ -99,6 +99,7 @@ for i=1:maximumID
     else
         DateNrFirstPSA=DateNrPSA(1,1);
     end
+    % Vraag Saray: wat gebeurt er wanneer DateNrPSA leeg is?
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Create a condition here on wether or not the respective patient has a
