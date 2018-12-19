@@ -7,9 +7,13 @@ function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesEC
     ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValueDBC1, ...
     ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValueDBC2, ...
     ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesV2_R(PSA,MRI,BIOPT,ECHO,DBC)    
+
 % pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA=<4, 2 is 4<PSA=<10 and 3 is PSA>10) 
 % This is necessary because the three different groups have different sizes of matrices. Later on they will have to be concatenated.
+
+%% pre-allocation of patientdates
 maximumID=max(PSA.ID);
+
 patientDatesPSA1=zeros(maximumID, 100);
 patientDatesMRI1=zeros(maximumID, 100);
 patientDatesBIOPT1=zeros(maximumID, 100);
@@ -75,13 +79,8 @@ ValueECHO3=zeros(maximumID, 100);
 ValueFreePSA3=zeros(maximumID, 100);
 ValueDBC3=zeros(maximumID, 100);
 
-
-% Find the indices of the patients which have a PSA value which belongs to one of the three groups
-
-UnderFourPSA = find(PSA.psa<=4);
-FourToTenPSA = find(PSA.psa>4 & PSA.psa<=10);
-AboveTenPSA = find(PSA.psa>10);
-
+%% Create a matrix of the dates an examination is done per patientnumber 
+% (one row = one patient)
 % Create a matrix of the dates an examination is done per patientnumber 
 % (one row = one patient)
 
@@ -89,12 +88,25 @@ for i=1:maximumID
 %   for i=1:length(techniques)
     %make a matrix of dates for PSA
     
+    % VOEG HIER NOG STUK SARAY TOE, ZODAT DIE ALLEEN KIJKT NAAR UNIEKE ID'S
+    % NU GEEFT HET SCRIPT EEN FOUTMELDING WANNEER DateNrPSA leeg is.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     DateNrPSA=find(PSA.ID==i);
+    % Take only the first PSA measurement date to compare to the thresholds
+    % if it's empty then nothing will be added
+    if isempty(DateNrPSA)==1
+        DateNrFirstPSA = DateNrPSA;
+    else
+        DateNrFirstPSA=DateNrPSA(1,1);
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     % Create a condition here on wether or not the respective patient has a
     % PSA value under 4, between 4 and 10 or higher than 10. Based on this
+
     % it puts the values in one of the three sets of matrices (1,2 or 3).
-    if ismember(DateNrPSA,UnderFourPSA) == 1
-       
+    if PSA.psa(DateNrFirstPSA,1)<=4
+
         NrOfDetectionsPSA1(i)=length(DateNrPSA);
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA1(i, 1:length(datesPSA))=datesPSA;
@@ -135,7 +147,7 @@ for i=1:maximumID
         methodsDBC1(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
         ValueDBC1(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
     
-    elseif ismember(DateNrPSA,FourToTenPSA) == 1
+    elseif PSA.psa(DateNrFirstPSA,1)>4 & PSA.psa(DateNrFirstPSA)<=10
         
         NrOfDetectionsPSA2(i)=length(DateNrPSA);
         datesPSA=PSA.date(DateNrPSA)';
@@ -177,7 +189,7 @@ for i=1:maximumID
         methodsDBC2(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
         ValueDBC2(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
         
-    elseif ismember(DateNrPSA,AboveTenPSA) == 1
+    elseif PSA.psa(DateNrFirstPSA,1)>10
         NrOfDetectionsPSA3(i)=length(DateNrPSA);
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA3(i, 1:length(datesPSA))=datesPSA;
