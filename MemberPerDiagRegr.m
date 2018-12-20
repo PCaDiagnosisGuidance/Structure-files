@@ -5,7 +5,7 @@ close all
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
 %% Inputs
-PSAwindow=[-Inf Inf];   %[-Inf Inf] [4 10]
+PSAwindow=[4 10];   %[-Inf Inf] [4 10]
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
@@ -25,6 +25,7 @@ end
 BIOPTmember=ismember(PSAUniq,BIOPT.ID);
 MRImember=ismember(PSAUniq,MRI.ID);
 ECHOmember=ismember(PSAUniq,ECHO.ID);
+DBCmember=ismember(PSAUniq,DBC.ID);
 
 %% PSAwindow
 ind=find(PSAperID >= PSAwindow(1) & PSAperID < PSAwindow(2));
@@ -33,6 +34,7 @@ PSAperID=PSAperID(ind);
 BIOPTmember=BIOPTmember(ind);
 MRImember=MRImember(ind);
 ECHOmember=ECHOmember(ind);
+DBCmember=DBCmember(ind);
 
 %% Regressions
 X=[ones(size(AgePerID)) AgePerID PSAperID];
@@ -40,6 +42,7 @@ X=[ones(size(AgePerID)) AgePerID PSAperID];
 [B_BIOPT,confIntBIOPT,~,~,R2Fp_BIOPT]=regress(BIOPTmember,X);
 [B_MRI,confIntMRI,~,~,R2Fp_MRI]=regress(MRImember,X);
 [B_ECHO,confIntECHO,~,~,R2Fp_ECHO]=regress(ECHOmember,X);
+[B_DBC,confIntDBC,~,~,R2Fp_DBC]=regress(DBCmember,X);
 
 figure(1)
 scatter3(AgePerID,PSAperID,BIOPTmember,'filled')
