@@ -351,4 +351,5 @@ ind=find(~isnan(PCa.PCa));
 PCa.ID=PCa.ID(ind);
 PCa.PCa=PCa.PCa(ind);
 
-varargout=PCa;
+varargout{1}=PCa;
+end
