@@ -1,4 +1,4 @@
-function [PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut(datalocation)
+function [PSA,MRI,BIOPT,ECHO,DBC,varargout] = DataReadOut(datalocation)
 % datalocation should be a string of the folder location where the csv data
 % files are saved. 
 % This document reads out the 5 data files and assigns the columns
@@ -316,4 +316,39 @@ DBC.sdate = dbcsdate;
 DBC.edate = dbcedate;
 DBC.PCa = dbcPCa;
 
-%test
+%% Creating a merged PCa dataset
+BIOPTUniq=unique(BIOPT.ID);
+DBCUniq=unique(DBC.ID);
+
+PCa.ID=BIOPTUniq;
+
+PCa.PCa=zeros(size(BIOPTUniq));
+
+for i=1:length(BIOPTUniq)
+    ind=find(BIOPT.ID==BIOPTUniq(i));
+    PCa.PCa(i)=BIOPT.PCa(ind(end));
+end
+
+%Create DBC arrays for IDs that are not in BIOPT
+DBCLeftoverID=DBCUniq(~ismember(DBCUniq,BIOPTUniq));
+DBCLeftoverPCa=zeros(size(DBCLeftoverID));
+
+for i=1:length(DBCLeftoverID)
+    ind=find(DBC.ID==DBCLeftoverID(i));
+    DBCLeftoverPCa(i)=DBC.PCa(ind(end));
+end
+
+%Concatenate PCa arrays with DBC data
+PCa.ID=[PCa.ID' DBCLeftoverID']';
+PCa.PCa=[PCa.PCa' DBCLeftoverPCa']';
+
+%Sort both PCa data arrays
+[PCa.ID,ind]=sort(PCa.ID);
+PCa.PCa=PCa.PCa(ind);
+
+%Remove NaN entries
+ind=find(~isnan(PCa.PCa));
+PCa.ID=PCa.ID(ind);
+PCa.PCa=PCa.PCa(ind);
+
+varargout=PCa;
