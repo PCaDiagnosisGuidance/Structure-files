@@ -1,4 +1,4 @@
-function NrCombinations=findOrderMethods(methodsperMRI, scalar)
+function [NrCombinations, DBCperOrder]=findOrderMethods(methodsperMRI, scalar, DBCcode)
 %This function determines how many times a combination of different
 %techniques is used. 
 %It can be a combination of all possible four techniques and the DBC in an
@@ -16,13 +16,19 @@ switch scalar
         
     case 2 %gives orders of two methods combined
     combinations=getcombinations(scalar);            %[1, 2; 1, 3; 1, 4; 2, 1; 2, 2; 2, 3; 2, 4; 3, 1; 3, 2; 3, 4; 4, 1; 4, 2; 4, 3];
-    NrCombinations=zeros(size(combinations, 1), 1);
+    NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
         methodsperMRI2=nonzeros(methodsperMRI(i, :))';
         for k=1:size(combinations, 1);
             for j=2:length(methodsperMRI2);
                 if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) ;
-                    NrCombinations(k)=NrCombinations(k)+1;
+                    if DBCcode(i)==-1; %all the time frames with no DBC code
+                        NrCombinations(k, 1)=NrCombinations(k, 1)+1;
+                    elseif DBCcode(i)==0; %with a DBC code of no cancer
+                        NrCombinations(k, 2)=NrCombinations(k, 2)+1;
+                    elseif DBCcode(i)==1; %with a DBC code of cancer
+                        NrCombinations(k, 3)=NrCombinations(k, 3)+1;
+                    end
                 end
             end
         end
@@ -31,13 +37,19 @@ switch scalar
     case 3
         
     combinations=getcombinations(scalar); 
-    NrCombinations=zeros(size(combinations, 1), 1);
+    NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
         methodsperMRI2=nonzeros(methodsperMRI(i, :))';
         for k=1:size(combinations, 1);
             for j=2:(size(methodsperMRI2, 2)-1);
                 if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) && methodsperMRI2(j+1)==combinations(k, 3);
-                    NrCombinations(k)=NrCombinations(k)+1;
+                    if DBCcode(i)==-1; %all the time frames with no DBC code
+                        NrCombinations(k, 1)=NrCombinations(k, 1)+1;
+                    elseif DBCcode(i)==0; %with a DBC code of no cancer
+                        NrCombinations(k, 2)=NrCombinations(k, 2)+1;
+                    elseif DBCcode(i)==1; %with a DBC code of cancer
+                        NrCombinations(k, 3)=NrCombinations(k, 3)+1;
+                    end
                 end
             end
         end
@@ -46,13 +58,19 @@ switch scalar
     case 4
 
     combinations=getcombinations(scalar); 
-    NrCombinations=zeros(size(combinations, 1), 1);
+    NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
         methodsperMRI2=nonzeros(methodsperMRI(i, :))';
         for k=1:size(combinations, 1);
             for j=2:(size(methodsperMRI2, 2)-2);
                  if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) && methodsperMRI2(j+1)==combinations(k, 3) && methodsperMRI2(j+2)==combinations(k, 4);
-                     NrCombinations(k)=NrCombinations(k)+1;
+                    if DBCcode(i)==-1; %all the time frames with no DBC code
+                        NrCombinations(k, 1)=NrCombinations(k, 1)+1;
+                    elseif DBCcode(i)==0; %with a DBC code of no cancer
+                        NrCombinations(k, 2)=NrCombinations(k, 2)+1;
+                    elseif DBCcode(i)==1; %with a DBC code of cancer
+                        NrCombinations(k, 3)=NrCombinations(k, 3)+1;
+                    end
                  end
             end
     	end
