@@ -198,11 +198,7 @@ for i=1:length(gleason)
     elseif strcmp(gleason(i,1),'?') == 1
         gleason(i,1) = {'?'};
     elseif strcmp(gleason(i,1),'prostatectomie') == 1
-        bioptID(i,1)=[];
-        bioptdate(i,1)=[];
-        bioptPCa(i,1)=[];
-        gleason(i,1)=[];
-        
+        gleason(i,1) = {'NaN'};   % Halen we dus weg
     end
 end
 gleason = str2double(gleason);
