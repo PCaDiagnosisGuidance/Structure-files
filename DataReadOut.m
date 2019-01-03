@@ -192,16 +192,18 @@ clearvars filename delimiter startRow formatSpec fileID dataArray ans;
 bioptdate = datenum(bioptdate); 
 
 % Gleason values completion, set all neg values to 0
+k=0;
 for i=1:length(gleason)
-    if strcmp(gleason(i,1),'neg') == 1 
-        gleason(i,1) = {'0'}; 
-    elseif strcmp(gleason(i,1),'?') == 1
-        gleason(i,1) = {'?'};
-    elseif strcmp(gleason(i,1),'prostatectomie') == 1
-        bioptID(i,1)=[];
-        bioptdate(i,1)=[];
-        bioptPCa(i,1)=[];
-        gleason(i,1)=[];
+    if strcmp(gleason(i-k),'neg') == 1 
+        gleason(i-k) = {'0'}; 
+    elseif strcmp(gleason(i-k),'?') == 1
+        gleason(i-k) = {'?'};
+    elseif strcmp(gleason(i-k),'prostatectomie') == 1
+        bioptID(i-k)=[];
+        bioptdate(i-k)=[];
+        bioptPCa(i-k)=[];
+        gleason(i-k)=[];
+        k=k+1;
     end
 end
 gleason = str2double(gleason);
