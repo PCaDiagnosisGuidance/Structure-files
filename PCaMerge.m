@@ -48,30 +48,37 @@ DBCUniq=unique(DBC.ID);
 PCa.ID=BIOPTUniq;
 
 PCa.PCa=zeros(size(BIOPTUniq));
+PCa.date=PCa.PCa;
 
 for i=1:length(BIOPTUniq)
     ind=find(BIOPT.ID==BIOPTUniq(i));
     PCa.PCa(i)=BIOPT.PCa(ind(end));
+    PCa.date(i)=BIOPT.date(ind(end));
 end
 
 %Create DBC arrays for IDs that are not in BIOPT
 DBCLeftoverID=DBCUniq(~ismember(DBCUniq,BIOPTUniq));
 DBCLeftoverPCa=zeros(size(DBCLeftoverID));
+DBCLeftoverDate=DBCLeftoverPCa;
 
 for i=1:length(DBCLeftoverID)
     ind=find(DBC.ID==DBCLeftoverID(i));
     DBCLeftoverPCa(i)=DBC.PCa(ind(end));
+    DBCLeftoverDate(i)=DBC.sdate(ind(end));
 end
 
 %Concatenate PCa arrays with DBC data
 PCa.ID=[PCa.ID' DBCLeftoverID']';
 PCa.PCa=[PCa.PCa' DBCLeftoverPCa']';
+PCa.date=[PCa.date' DBCLeftoverDate']';
 
 %Sort both PCa data arrays
 [PCa.ID,ind]=sort(PCa.ID);
 PCa.PCa=PCa.PCa(ind);
+PCa.date=PCa.date(ind);
 
 %Remove NaN entries
 ind=find(~isnan(PCa.PCa));
 PCa.ID=PCa.ID(ind);
 PCa.PCa=PCa.PCa(ind);
+PCa.date=PCa.date(ind);
