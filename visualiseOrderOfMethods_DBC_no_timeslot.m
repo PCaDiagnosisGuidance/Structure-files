@@ -1,10 +1,10 @@
 tic
 close all
-[PSA,MRI,BIOPT,ECHO,DBC]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
+%[PSA,MRI,BIOPT,ECHO,DBC, PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
 % 
 % %visualise order of methods
 [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
- AllValuesperPSA3, methodsperPSA3, DBC_code_no_timeframe]=findDataPerPSA_DBC_no_timeframe(PSA,MRI,BIOPT,ECHO,DBC, -1, 119);
+ AllValuesperPSA3, methodsperPSA3, DBC_code_no_timeframe]=findDataPerPSA_DBC_no_timeframe(PSA,MRI,BIOPT,ECHO,PCa, -1, 119);
 
 % DBC_code=DBC.PCa
 % DBC_code1=getDBCcode(AllValuesperPSA1, methodsperPSA1);

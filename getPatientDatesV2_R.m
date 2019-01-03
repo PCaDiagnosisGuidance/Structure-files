@@ -143,7 +143,7 @@ for i=1:maximumID
         %make a matrix of dates for DBC (taking the closing date of the DBC
         DateNrDBC=find(DBC.ID==i);
         NrOfDetectionsDBC1(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
+        datesDBC=DBC.date(DateNrDBC)';
         patientDatesDBC1(i, 1:length(datesDBC))=datesDBC;
         methodsDBC1(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
         ValueDBC1(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
@@ -185,7 +185,7 @@ for i=1:maximumID
         %make a matrix of dates for DBC (taking the closing date of the DBC
         DateNrDBC=find(DBC.ID==i);
         NrOfDetectionsDBC2(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
+        datesDBC=DBC.date(DateNrDBC)';
         patientDatesDBC2(i, 1:length(datesDBC))=datesDBC;
         methodsDBC2(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
         ValueDBC2(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
@@ -226,7 +226,7 @@ for i=1:maximumID
         %make a matrix of dates for DBC (taking the closing date of the DBC
         DateNrDBC=find(DBC.ID==i);
         NrOfDetectionsDBC3(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
+        datesDBC=DBC.date(DateNrDBC)';
         patientDatesDBC3(i, 1:length(datesDBC))=datesDBC;
         methodsDBC3(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
         ValueDBC3(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';

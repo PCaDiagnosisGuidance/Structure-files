@@ -1,5 +1,5 @@
 function [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
-    AllValuesperPSA3, methodsperPSA3, DBC_code_no_timeframe]=findDataPerPSAV_DBC_no_timeframe(PSA,MRI,BIOPT,ECHO,DBC, minBoundary, maxBoundary)
+    AllValuesperPSA3, methodsperPSA3, DBC_code_no_timeframe]=findDataPerPSAV_DBC_no_timeframe(PSA,MRI,BIOPT,ECHO, PCa, minBoundary, maxBoundary)
 
 %find timeslots based PSA data. 
 %Order of steps taken in the script
@@ -25,7 +25,7 @@ close all
     methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsDBC3,...
     ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValueDBC1, ...
     ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValueDBC2, ...
-    ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesV2_R(PSA,MRI,BIOPT,ECHO,DBC);    
+    ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesV2_R(PSA,MRI,BIOPT,ECHO,PCa);    
 
 Dates1 = [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesDBC1];
 Dates2 = [patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesDBC2];
