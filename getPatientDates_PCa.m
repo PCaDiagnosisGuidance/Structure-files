@@ -1,4 +1,4 @@
-function [Dates1, Dates2, Dates3, Methods1, Methods2, Methods3, Values1, Values2, Values3, patientDatesPSA1, patientDatesPSA2, patientDatesPSA3]=getPatientDates_PCa(PSA,MRI,BIOPT,ECHO,PCa)   
+function [Dates1, Dates2, Dates3, Methods1, Methods2, Methods3, Values1, Values2, Values3, patientDatesPSA1, patientDatesPSA2, patientDatesPSA3]=sortDatesMethodValue(PSA,MRI,BIOPT,ECHO,PCa)   
 
 % pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA=<4, 2 is 4<PSA=<10 and 3 is PSA>10) 
 % This is necessary because the three different groups have different sizes of matrices. Later on they will have to be concatenated.
@@ -268,14 +268,44 @@ for i=1:size(ValueFreePSA3, 1)
     end
 end
 
-Dates1 = [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1];
-Dates2 = [patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2];
-Dates3 = [patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3];
-Methods1 = [methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsPCa1];
-Methods2 = [methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsPCa2];
-Methods3 = [methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsPCa3];
-Values1 = [ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValuePCa1];
-Values2 = [ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2];
-Values3 = [ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3];
-    
+Dates1_unsorted = [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1];
+Dates2_unsorted = [patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2];
+Dates3_unsorted = [patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3];
+Methods1_unsorted = [methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsPCa1];
+Methods2_unsorted = [methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsPCa2];
+Methods3_unsorted = [methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsPCa3];
+Values1_unsorted = [ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValuePCa1];
+Values2_unsorted = [ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2];
+Values3_unsorted = [ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3];
+
+%% sort methods and values
+%get per patient the dates in a sorted order and the index where the date
+%is moved in the matrix
+[Dates1, IndexDates1]=sort(Dates1_unsorted, 2); 
+[Dates2, IndexDates2]=sort(Dates2_unsorted, 2);
+[Dates3, IndexDates3]=sort(Dates3_unsorted, 2);
+
+
+%Arrange the methods and values in the same order as the dates are sorted, so now you
+%get all the methods and dates sorted on date. 
+for i=1:maximumID
+     for j=1:size(Methods1_unsorted, 2)
+            Methods1(i, j)=Methods1_unsorted(i, IndexDates1(i, j));
+            Values1(i, j)=Values1_unsorted(i, IndexDates1(i, j));
+     end
+end
+ 
+for i=1:maximumID
+     for j=1:size(Methods2_unsorted, 2)
+            Methods2(i, j)=Methods2_unsorted(i, IndexDates2(i, j));
+            Values2(i, j)=Values2_unsorted(i, IndexDates2(i, j));
+     end
+end
+
+for i=1:maximumID
+     for j=1:size(Methods3_unsorted, 2)
+            Methods3(i, j)=Methods3_unsorted(i, IndexDates3(i, j));
+            Values3(i, j)=Values3_unsorted(i, IndexDates3(i, j));
+     end
+end
 end
