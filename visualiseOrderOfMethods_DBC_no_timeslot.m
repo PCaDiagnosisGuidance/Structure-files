@@ -1,6 +1,6 @@
 tic
 close all
-%[PSA,MRI,BIOPT,ECHO,DBC, PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
+[PSA,MRI,BIOPT,ECHO,DBC, PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
 % 
 % %visualise order of methods
 [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
