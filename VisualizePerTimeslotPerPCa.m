@@ -2,8 +2,8 @@
 % This has to be done by running DataReadOut as a function. 
 
 [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
-    AllValuesperPSA3, methodsperPSA3]=findDataPerPCa_R(PSA,MRI,BIOPT,ECHO,DBC, -1, 119);
-% By exchanging findDataPerPCa_R for findDataPerPSAgroups_R you can plot
+    AllValuesperPSA3, methodsperPSA3]=findDataPerPSAgroups_R(PSA,MRI,BIOPT,ECHO,PCa, -1, 119);
+% By exchanging findDataPerPCa_R for findDataPerPSAV2_R you can plot
 % the figures for the three PSA groups instead of the three PCa groups.
 
 psa_value1=zeros(13939, 1);
@@ -11,7 +11,7 @@ mri_value1=zeros(13939,1);
 biopt_value1=zeros(13939,1);
 echo_value1=zeros(13939,1);
 freepsa_value1=zeros(13939,1);
-dbc_value1=zeros(13939,1); 
+pca_value1=zeros(13939,1); 
 
 % Extract all the right values for the parameters in the given timeslot. Do
 % this per group (1, 2 and 3). Where 1 corresponds to either PCa = 1 or 
@@ -52,11 +52,11 @@ for i=1:13939
         freepsa_value1(i, 1)=0;
     end
     
-    dbc_index=find(methodsperPSA1(i, :)==6, 1, 'first');
-    if isempty(dbc_index)==0
-        dbc_value1(i, 1:length(dbc_index))=AllValuesperPSA1(i, dbc_index);
+    pca_index=find(methodsperPSA1(i, :)==6, 1, 'first');
+    if isempty(pca_index)==0
+        pca_value1(i, 1:length(pca_index))=AllValuesperPSA1(i, pca_index);
     else
-        dbc_value1(i, 1)=0;
+        pca_value1(i, 1)=0;
     end
 end
 
@@ -65,7 +65,7 @@ mri_value2=zeros(13939,1);
 biopt_value2=zeros(13939,1);
 echo_value2=zeros(13939,1);
 freepsa_value2=zeros(13939,1);
-dbc_value2=zeros(13939,1);
+pca_value2=zeros(13939,1);
 
 for i=1:13939
     psa_index=find(methodsperPSA2(i, :)==1, 1, 'first');
@@ -101,11 +101,11 @@ for i=1:13939
         freepsa_value2(i, 1)=0;
     end
     
-    dbc_index=find(methodsperPSA2(i, :)==6, 1, 'first');
-    if isempty(dbc_index)==0
-        dbc_value2(i, 1:length(dbc_index))=AllValuesperPSA2(i, dbc_index);
+    pca_index=find(methodsperPSA2(i, :)==6, 1, 'first');
+    if isempty(pca_index)==0
+        pca_value2(i, 1:length(pca_index))=AllValuesperPSA2(i, pca_index);
     else
-        dbc_value2(i, 1)=0;
+        pca_value2(i, 1)=0;
     end
 end
 
@@ -114,7 +114,7 @@ mri_value3=zeros(13939,1);
 biopt_value3=zeros(13939,1);
 echo_value3=zeros(13939,1);
 freepsa_value3=zeros(13939,1);
-dbc_value3=zeros(13939,1);
+pca_value3=zeros(13939,1);
 
 for i=1:13939
     psa_index=find(methodsperPSA3(i, :)==1, 1, 'first');
@@ -150,86 +150,91 @@ for i=1:13939
         freepsa_value3(i, 1)=0;
     end
     
-    dbc_index=find(methodsperPSA3(i, :)==6, 1, 'first');
-    if isempty(dbc_index)==0
-        dbc_value3(i, 1:length(dbc_index))=AllValuesperPSA3(i, dbc_index);
+    pca_index=find(methodsperPSA3(i, :)==6, 1, 'first');
+    if isempty(pca_index)==0
+        pca_value3(i, 1:length(pca_index))=AllValuesperPSA3(i, pca_index);
     else
-        dbc_value3(i, 1)=0;
+        pca_value3(i, 1)=0;
     end
 end
-
+%% Plotting all values
 % Now scatter all the possible combinations of parameters.
-figure(1); scatter(biopt_value1,echo_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+figure
+subplot(2,5,1); scatter(biopt_value1,echo_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,echo_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,echo_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value2,echo_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value3,echo_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Gleason score'); 
 ylabel('Volume (mL)');
 
-figure(2); scatter(biopt_value1,mri_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,2); scatter(biopt_value1,mri_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,mri_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,mri_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value2,mri_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value3,mri_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Gleason score'); 
 ylabel('PI-RADS');
 
-figure(3); scatter(biopt_value1,psa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,3); scatter(biopt_value1,psa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,psa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,psa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value2,psa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value3,psa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Gleason score'); 
 ylabel('PSA concentration (ug/mL)');
 ylim([0 50]);
 
-figure(4); scatter(biopt_value1,freepsa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,4); scatter(biopt_value1,freepsa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,freepsa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,freepsa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value2,freepsa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(biopt_value3,freepsa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Gleason score'); 
 ylabel('Free PSA concentration (ug/mL)');
+ylim([0 15]);
 
-figure(5); scatter(mri_value1,psa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,5); scatter(mri_value1,psa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,psa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,psa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value2,psa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value3,psa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('PI-RADS'); 
 ylabel('PSA concentration (ug/mL)');
 ylim([0 50]);
 
-figure(6); scatter(mri_value1,freepsa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,6); scatter(mri_value1,freepsa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,freepsa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,freepsa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value2,freepsa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value3,freepsa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('PI-RADS'); 
 ylabel('Free PSA concentration (ug/mL)');
+ylim([0 15]);
 
-figure(7); scatter(mri_value1,echo_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,7); scatter(mri_value1,echo_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(biopt_value2,echo_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(biopt_value3,echo_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value2,echo_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(mri_value3,echo_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('PI-RADS'); 
 ylabel('Volume (mL)');
 
-figure(8); scatter(freepsa_value1,psa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,8); scatter(freepsa_value1,psa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(freepsa_value2,psa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(freepsa_value3,psa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(freepsa_value2,psa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(freepsa_value3,psa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Free PSA concentration (ug/mL)'); 
 ylabel('PSA concentration (ug/mL)');
+xlim([0 15]);
 ylim([0 50]);
 
-figure(9); scatter(echo_value1,psa_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,9); scatter(echo_value1,psa_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(echo_value2,psa_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(echo_value3,psa_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(echo_value2,psa_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(echo_value3,psa_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Volume (mL)'); 
 ylabel('PSA concentration (ug/mL)');
 ylim([0 50]);
 
-figure(10); scatter(freepsa_value1,echo_value1, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+subplot(2,5,10); scatter(freepsa_value1,echo_value1, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 hold on 
-scatter(freepsa_value2,echo_value2, 'g','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
-scatter(freepsa_value3,echo_value3, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(freepsa_value2,echo_value2, 'b','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
+scatter(freepsa_value3,echo_value3, 'r','filled','MarkerFaceAlpha',.4,'MarkerEdgeAlpha',.4);
 xlabel('Free PSA concentration (ug/mL)'); 
 ylabel('Volume (mL)');
+xlim([0 15]);
 

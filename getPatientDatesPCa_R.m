@@ -1,12 +1,12 @@
-function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesDBC1,...
-    patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesDBC2,  ...
-    patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesDBC3, ...
-    methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsDBC1,...
-    methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsDBC2,...
-    methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsDBC3,...
-    ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValueDBC1, ...
-    ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValueDBC2, ...
-    ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesPCa_R(PSA,MRI,BIOPT,ECHO,DBC)    
+function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1,...
+    patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2,  ...
+    patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3, ...
+    methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsPCa1,...
+    methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsPCa2,...
+    methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsPCa3,...
+    ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValuePCa1, ...
+    ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2, ...
+    ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3]=getPatientDatesPCa_R(PSA,MRI,BIOPT,ECHO,PCa)    
 % This function returns the corresponding value, date and type of every
 % measurement done per patient (per row). It does this for PCa, non-PCa and
 % unknown PCa patients. 
@@ -25,21 +25,21 @@ patientDatesMRI1=zeros(maximumID, 100);
 patientDatesBIOPT1=zeros(maximumID, 100);
 patientDatesECHO1=zeros(maximumID, 100);
 patientDatesFreePSA1=zeros(maximumID,100);
-patientDatesDBC1=zeros(maximumID,100);
+patientDatesPCa1=zeros(maximumID,100);
 
 patientDatesPSA2=zeros(maximumID, 100);
 patientDatesMRI2=zeros(maximumID, 100);
 patientDatesBIOPT2=zeros(maximumID, 100);
 patientDatesECHO2=zeros(maximumID, 100);
 patientDatesFreePSA2=zeros(maximumID,100);
-patientDatesDBC2=zeros(maximumID,100);
+patientDatesPCa2=zeros(maximumID,100);
 
 patientDatesPSA3=zeros(maximumID, 100);
 patientDatesMRI3=zeros(maximumID, 100);
 patientDatesBIOPT3=zeros(maximumID, 100);
 patientDatesECHO3=zeros(maximumID, 100);
 patientDatesFreePSA3=zeros(maximumID,100);
-patientDatesDBC3=zeros(maximumID,100);
+patientDatesPCa3=zeros(maximumID,100);
 
 % pre-allocation of methods
 methodsPSA1=zeros(maximumID, 100);
@@ -47,21 +47,21 @@ methodsMRI1=zeros(maximumID, 100);
 methodsBIOPT1=zeros(maximumID, 100);
 methodsECHO1=zeros(maximumID, 100);
 methodsFreePSA1=zeros(maximumID, 100);
-methodsDBC1=zeros(maximumID, 100);
+methodsPCa1=zeros(maximumID, 100);
 
 methodsPSA2=zeros(maximumID, 100);
 methodsMRI2=zeros(maximumID, 100);
 methodsBIOPT2=zeros(maximumID, 100);
 methodsECHO2=zeros(maximumID, 100);
 methodsFreePSA2=zeros(maximumID, 100);
-methodsDBC2=zeros(maximumID, 100);
+methodsPCa2=zeros(maximumID, 100);
 
 methodsPSA3=zeros(maximumID, 100);
 methodsMRI3=zeros(maximumID, 100);
 methodsBIOPT3=zeros(maximumID, 100);
 methodsECHO3=zeros(maximumID, 100);
 methodsFreePSA3=zeros(maximumID, 100);
-methodsDBC3=zeros(maximumID, 100);
+methodsPCa3=zeros(maximumID, 100);
 
 % pre-allocation of value
 ValuePSA1=zeros(maximumID, 100);
@@ -69,21 +69,21 @@ ValueMRI1=zeros(maximumID, 100);
 ValueBIOPT1=zeros(maximumID, 100);
 ValueECHO1 =zeros(maximumID, 100);
 ValueFreePSA1=zeros(maximumID, 100);
-ValueDBC1=zeros(maximumID, 100);
+ValuePCa1=zeros(maximumID, 100);
 
 ValuePSA2=zeros(maximumID, 100);
 ValueMRI2 =zeros(maximumID, 100);
 ValueBIOPT2=zeros(maximumID, 100);
 ValueECHO2=zeros(maximumID, 100);
 ValueFreePSA2=zeros(maximumID, 100);
-ValueDBC2=zeros(maximumID, 100);
+ValuePCa2=zeros(maximumID, 100);
 
 ValuePSA3 =zeros(maximumID, 100);
 ValueMRI3=zeros(maximumID, 100);
 ValueBIOPT3=zeros(maximumID, 100);
 ValueECHO3=zeros(maximumID, 100);
 ValueFreePSA3=zeros(maximumID, 100);
-ValueDBC3=zeros(maximumID, 100);
+ValuePCa3=zeros(maximumID, 100);
 
 
 %% Create a matrix of the dates an examination is done per patientnumber 
@@ -99,11 +99,11 @@ for i=1:maximumID
     % NU GEEFT HET SCRIPT EEN FOUTMELDING WANNEER DateNrPSA leeg is.
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     DateNrPSA=find(PSA.ID==i);
-    DBCNr = find(DBC.ID==i);
-    PCa = DBC.PCa(DBCNr,1);
+    PCaNr = find(PCa.ID==i);
+    currentPCa = PCa.PCa(PCaNr,1);
     % If DBCNr is empty then change DBC to -1, meaning it's unknown
-    if isempty(DBCNr)==1
-        PCa = -1;
+    if isempty(PCaNr)==1
+        currentPCa = -1;
     end
     % Vraag Saray: wat gebeurt er wanneer DateNrPSA leeg is?
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,7 +112,7 @@ for i=1:maximumID
     % PCa of 1 or 0 (yes or no) or if it's not known (PCa = -1). Based on 
     % this it gets put into set 1,2 or 3 of the matrices respectively.
 
-    if PCa == 1
+    if currentPCa == 1
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA1(i, 1:length(datesPSA))=datesPSA;
         methodsPSA1(i, 1:length(datesPSA))=ones(1, length(datesPSA));
@@ -142,13 +142,13 @@ for i=1:maximumID
         ValueECHO1(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
         %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC1(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC1(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC1(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        DateNrDBC=find(PCa.ID==i);
+        datesDBC=PCa.date(DateNrDBC)';
+        patientDatesPCa1(i, 1:length(datesDBC))=datesDBC;
+        methodsPCa1(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
+        ValuePCa1(i, 1:length(datesDBC))=PCa.PCa(DateNrDBC)';
     
-    elseif PCa == 0
+    elseif currentPCa == 0
         
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA2(i, 1:length(datesPSA))=datesPSA;
@@ -179,13 +179,13 @@ for i=1:maximumID
         ValueECHO2(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
         %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC2(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC2(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC2(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        DateNrDBC=find(PCa.ID==i);
+        datesDBC=PCa.date(DateNrDBC)';
+        patientDatesPCa2(i, 1:length(datesDBC))=datesDBC;
+        methodsPCa2(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
+        ValuePCa2(i, 1:length(datesDBC))=PCa.PCa(DateNrDBC)';
         
-    elseif PCa == -1
+    elseif currentPCa == -1
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA3(i, 1:length(datesPSA))=datesPSA;
         methodsPSA3(i, 1:length(datesPSA))=ones(1, length(datesPSA));
@@ -215,11 +215,11 @@ for i=1:maximumID
         ValueECHO3(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
         %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC3(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC3(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC3(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        DateNrDBC=find(PCa.ID==i);
+        datesDBC=PCa.date(DateNrDBC)';
+        patientDatesPCa3(i, 1:length(datesDBC))=datesDBC;
+        methodsPCa3(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
+        ValuePCa3(i, 1:length(datesDBC))=PCa.PCa(DateNrDBC)';
         
     end
 end
