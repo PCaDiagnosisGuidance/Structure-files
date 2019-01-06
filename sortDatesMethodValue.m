@@ -1,12 +1,4 @@
-function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesDBC1,...
-    patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesDBC2,  ...
-    patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesDBC3, ...
-    methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsDBC1,...
-    methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsDBC2,...
-    methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsDBC3,...
-    ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValueDBC1, ...
-    ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValueDBC2, ...
-    ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValueDBC3]=getPatientDatesV2_R(PSA,MRI,BIOPT,ECHO,DBC)    
+function [Dates1, Dates2, Dates3, Methods1, Methods2, Methods3, Values1, Values2, Values3, patientDatesPSA1, patientDatesPSA2, patientDatesPSA3]=sortDatesMethodValue(PSA,MRI,BIOPT,ECHO,PCa)   
 
 % pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA=<4, 2 is 4<PSA=<10 and 3 is PSA>10) 
 % This is necessary because the three different groups have different sizes of matrices. Later on they will have to be concatenated.
@@ -19,21 +11,21 @@ patientDatesMRI1=zeros(maximumID, 100);
 patientDatesBIOPT1=zeros(maximumID, 100);
 patientDatesECHO1=zeros(maximumID, 100);
 patientDatesFreePSA1=zeros(maximumID,100);
-patientDatesDBC1=zeros(maximumID,100);
+patientDatesPCa1=zeros(maximumID,100);
 
 patientDatesPSA2=zeros(maximumID, 100);
 patientDatesMRI2=zeros(maximumID, 100);
 patientDatesBIOPT2=zeros(maximumID, 100);
 patientDatesECHO2=zeros(maximumID, 100);
 patientDatesFreePSA2=zeros(maximumID,100);
-patientDatesDBC2=zeros(maximumID,100);
+patientDatesPCa2=zeros(maximumID,100);
 
 patientDatesPSA3=zeros(maximumID, 100);
 patientDatesMRI3=zeros(maximumID, 100);
 patientDatesBIOPT3=zeros(maximumID, 100);
 patientDatesECHO3=zeros(maximumID, 100);
 patientDatesFreePSA3=zeros(maximumID,100);
-patientDatesDBC3=zeros(maximumID,100);
+patientDatesPCa3=zeros(maximumID,100);
 
 % pre-allocation of methods
 methodsPSA1=zeros(maximumID, 100);
@@ -41,21 +33,21 @@ methodsMRI1=zeros(maximumID, 100);
 methodsBIOPT1=zeros(maximumID, 100);
 methodsECHO1=zeros(maximumID, 100);
 methodsFreePSA1=zeros(maximumID, 100);
-methodsDBC1=zeros(maximumID, 100);
+methodsPCa1=zeros(maximumID, 100);
 
 methodsPSA2=zeros(maximumID, 100);
 methodsMRI2=zeros(maximumID, 100);
 methodsBIOPT2=zeros(maximumID, 100);
 methodsECHO2=zeros(maximumID, 100);
 methodsFreePSA2=zeros(maximumID, 100);
-methodsDBC2=zeros(maximumID, 100);
+methodsPCa2=zeros(maximumID, 100);
 
 methodsPSA3=zeros(maximumID, 100);
 methodsMRI3=zeros(maximumID, 100);
 methodsBIOPT3=zeros(maximumID, 100);
 methodsECHO3=zeros(maximumID, 100);
 methodsFreePSA3=zeros(maximumID, 100);
-methodsDBC3=zeros(maximumID, 100);
+methodsPCa3=zeros(maximumID, 100);
 
 % pre-allocation of value
 ValuePSA1=zeros(maximumID, 100);
@@ -63,21 +55,21 @@ ValueMRI1=zeros(maximumID, 100);
 ValueBIOPT1=zeros(maximumID, 100);
 ValueECHO1 =zeros(maximumID, 100);
 ValueFreePSA1=zeros(maximumID, 100);
-ValueDBC1=zeros(maximumID, 100);
+ValuePCa1=zeros(maximumID, 100);
 
 ValuePSA2=zeros(maximumID, 100);
 ValueMRI2 =zeros(maximumID, 100);
 ValueBIOPT2=zeros(maximumID, 100);
 ValueECHO2=zeros(maximumID, 100);
 ValueFreePSA2=zeros(maximumID, 100);
-ValueDBC2=zeros(maximumID, 100);
+ValuePCa2=zeros(maximumID, 100);
 
 ValuePSA3 =zeros(maximumID, 100);
 ValueMRI3=zeros(maximumID, 100);
 ValueBIOPT3=zeros(maximumID, 100);
 ValueECHO3=zeros(maximumID, 100);
 ValueFreePSA3=zeros(maximumID, 100);
-ValueDBC3=zeros(maximumID, 100);
+ValuePCa3=zeros(maximumID, 100);
 
 %% Create a matrix of the dates an examination is done per patientnumber 
 % (one row = one patient)
@@ -88,9 +80,6 @@ for i=1:maximumID
 %   for i=1:length(techniques)
     %make a matrix of dates for PSA
     
-    % VOEG HIER NOG STUK SARAY TOE, ZODAT DIE ALLEEN KIJKT NAAR UNIEKE ID'S
-    % NU GEEFT HET SCRIPT EEN FOUTMELDING WANNEER DateNrPSA leeg is.
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     DateNrPSA=find(PSA.ID==i);
     % Take only the first PSA measurement date to compare to the thresholds
     % if it's empty then nothing will be added
@@ -99,26 +88,23 @@ for i=1:maximumID
     else
         DateNrFirstPSA=DateNrPSA(1,1);
     end
-    % Vraag Saray: wat gebeurt er wanneer DateNrPSA leeg is?
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Create a condition here on wether or not the respective patient has a
     % PSA value under 4, between 4 and 10 or higher than 10. Based on this
 
     % it puts the values in one of the three sets of matrices (1,2 or 3).
     if PSA.psa(DateNrFirstPSA,1)<=4
+        datesPSA=PSA.date(DateNrPSA)'; %Find the dates with the given indexes
+        patientDatesPSA1(i, 1:length(datesPSA))=datesPSA; %add the dates to the list per patient
+        methodsPSA1(i, 1:length(datesPSA))=ones(1, length(datesPSA)); %add the methods at the given dates to the list
+        ValuePSA1(i, 1:length(datesPSA))=PSA.psa(DateNrPSA)'; %add the values at the given dates to the list
 
-        NrOfDetectionsPSA1(i)=length(DateNrPSA);
-        datesPSA=PSA.date(DateNrPSA)';
-        patientDatesPSA1(i, 1:length(datesPSA))=datesPSA;
-        methodsPSA1(i, 1:length(datesPSA))=ones(1, length(datesPSA));
-        ValuePSA1(i, 1:length(datesPSA))=PSA.psa(DateNrPSA)';
-
-        ValueFreePSA1(i, 1:length(datesPSA))=PSA.freepsa(DateNrPSA)';
+        ValueFreePSA1(i, 1:length(datesPSA))=PSA.freepsa(DateNrPSA)'; 
+        %the dates for free PSA are included in the dates for PSA, so the
+        %dates and methods will be found after this  forloop
 
         %make a matrix of dates for MRI
         DateNrMRI=find(MRI.ID==i);
-        NrOfDetectionsMRI1(i)=length(DateNrMRI);
         datesMRI=MRI.date(DateNrMRI)';
         patientDatesMRI1(i, 1:length(datesMRI))=datesMRI;
         methodsMRI1(i, 1:length(datesMRI))=2*ones(1, length(datesMRI));
@@ -126,7 +112,6 @@ for i=1:maximumID
 
         %make a matrix of dates for BIOPT
         DateNrBIOPT=find(BIOPT.ID==i);
-        NrOfDetectionsBIOPT1(i)=length(DateNrBIOPT);
         datesBIOPT=BIOPT.date(DateNrBIOPT)';
         patientDatesBIOPT1(i, 1:length(datesBIOPT))=datesBIOPT;
         methodsBIOPT1(i, 1:length(datesBIOPT))=3*ones(1, length(datesBIOPT));
@@ -134,33 +119,27 @@ for i=1:maximumID
 
         %make a matrix of dates for ECHO
         DateNrECHO=find(ECHO.ID==i);
-        NrOfDetectionsECHO1(i)=length(DateNrECHO);
         datesECHO=ECHO.date(DateNrECHO)';
         patientDatesECHO1(i, 1:length(datesECHO))=datesECHO;
         methodsECHO1(i, 1:length(datesECHO))=4*ones(1, length(datesECHO));
         ValueECHO1(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
-        %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        NrOfDetectionsDBC1(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC1(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC1(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC1(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        %make a matrix of dates for PCa taking the closest PCa
+        DateNrPCa=find(PCa.ID==i);
+        datesPCa=PCa.date(DateNrPCa)';
+        patientDatesPCa1(i, 1:length(datesPCa))=datesPCa;
+        methodsPCa1(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
+        ValuePCa1(i, 1:length(datesPCa))=PCa.PCa(DateNrPCa)';
     
     elseif PSA.psa(DateNrFirstPSA,1)>4 & PSA.psa(DateNrFirstPSA)<=10
-        
-        NrOfDetectionsPSA2(i)=length(DateNrPSA);
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA2(i, 1:length(datesPSA))=datesPSA;
         methodsPSA2(i, 1:length(datesPSA))=ones(1, length(datesPSA));
         ValuePSA2(i, 1:length(datesPSA))=PSA.psa(DateNrPSA)';
-
         ValueFreePSA2(i, 1:length(datesPSA))=PSA.freepsa(DateNrPSA)';
 
         %make a matrix of dates for MRI
         DateNrMRI=find(MRI.ID==i);
-        NrOfDetectionsMRI2(i)=length(DateNrMRI);
         datesMRI=MRI.date(DateNrMRI)';
         patientDatesMRI2(i, 1:length(datesMRI))=datesMRI;
         methodsMRI2(i, 1:length(datesMRI))=2*ones(1, length(datesMRI));
@@ -168,7 +147,6 @@ for i=1:maximumID
 
         %make a matrix of dates for BIOPT
         DateNrBIOPT=find(BIOPT.ID==i);
-        NrOfDetectionsBIOPT2(i)=length(DateNrBIOPT);
         datesBIOPT=BIOPT.date(DateNrBIOPT)';
         patientDatesBIOPT2(i, 1:length(datesBIOPT))=datesBIOPT;
         methodsBIOPT2(i, 1:length(datesBIOPT))=3*ones(1, length(datesBIOPT));
@@ -176,22 +154,19 @@ for i=1:maximumID
 
         %make a matrix of dates for ECHO
         DateNrECHO=find(ECHO.ID==i);
-        NrOfDetectionsECHO2(i)=length(DateNrECHO);
         datesECHO=ECHO.date(DateNrECHO)';
         patientDatesECHO2(i, 1:length(datesECHO))=datesECHO;
         methodsECHO2(i, 1:length(datesECHO))=4*ones(1, length(datesECHO));
         ValueECHO2(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
-        %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        NrOfDetectionsDBC2(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC2(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC2(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC2(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        %make a matrix of dates for PCa (taking the closing date of the PCa
+        DateNrPCa=find(PCa.ID==i);
+        datesPCa=PCa.date(DateNrPCa)';
+        patientDatesPCa2(i, 1:length(datesPCa))=datesPCa;
+        methodsPCa2(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
+        ValuePCa2(i, 1:length(datesPCa))=PCa.PCa(DateNrPCa)';
         
-    elseif PSA.psa(DateNrFirstPSA,1)>10
-        NrOfDetectionsPSA3(i)=length(DateNrPSA);
+    elseif PSA.psa(DateNrFirstPSA,1)>1
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA3(i, 1:length(datesPSA))=datesPSA;
         methodsPSA3(i, 1:length(datesPSA))=ones(1, length(datesPSA));
@@ -201,7 +176,6 @@ for i=1:maximumID
 
         %make a matrix of dates for MRI
         DateNrMRI=find(MRI.ID==i);
-        NrOfDetectionsMRI3(i)=length(DateNrMRI);
         datesMRI=MRI.date(DateNrMRI)';
         patientDatesMRI3(i, 1:length(datesMRI))=datesMRI;
         methodsMRI3(i, 1:length(datesMRI))=2*ones(1, length(datesMRI));
@@ -209,7 +183,6 @@ for i=1:maximumID
 
         %make a matrix of dates for BIOPT
         DateNrBIOPT=find(BIOPT.ID==i);
-        NrOfDetectionsBIOPT3(i)=length(DateNrBIOPT);
         datesBIOPT=BIOPT.date(DateNrBIOPT)';
         patientDatesBIOPT3(i, 1:length(datesBIOPT))=datesBIOPT;
         methodsBIOPT3(i, 1:length(datesBIOPT))=3*ones(1, length(datesBIOPT));
@@ -217,19 +190,17 @@ for i=1:maximumID
 
         %make a matrix of dates for ECHO
         DateNrECHO=find(ECHO.ID==i);
-        NrOfDetectionsECHO3(i)=length(DateNrECHO);
         datesECHO=ECHO.date(DateNrECHO)';
         patientDatesECHO3(i, 1:length(datesECHO))=datesECHO;
         methodsECHO3(i, 1:length(datesECHO))=4*ones(1, length(datesECHO));
         ValueECHO3(i, 1:length(datesECHO))=ECHO.volume(DateNrECHO)';
 
-        %make a matrix of dates for DBC (taking the closing date of the DBC
-        DateNrDBC=find(DBC.ID==i);
-        NrOfDetectionsDBC3(i)=length(DateNrDBC);
-        datesDBC=DBC.edate(DateNrDBC)';
-        patientDatesDBC3(i, 1:length(datesDBC))=datesDBC;
-        methodsDBC3(i, 1:length(datesDBC))=6*ones(1, length(datesDBC));
-        ValueDBC3(i, 1:length(datesDBC))=DBC.PCa(DateNrDBC)';
+        %make a matrix of dates for PCa (taking the closing date of the PCa
+        DateNrPCa=find(PCa.ID==i);
+        datesPCa=PCa.date(DateNrPCa)';
+        patientDatesPCa3(i, 1:length(datesPCa))=datesPCa;
+        methodsPCa3(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
+        ValuePCa3(i, 1:length(datesPCa))=PCa.PCa(DateNrPCa)';
     end
 end
     
@@ -275,5 +246,47 @@ for i=1:size(ValueFreePSA3, 1)
         end
     end
 end
-    
+
+%combine all the dates, methods and values of all the techniques and the
+%PCa value
+Dates1_unsorted = [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1];
+Dates2_unsorted = [patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2];
+Dates3_unsorted = [patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3];
+Methods1_unsorted = [methodsPSA1,  methodsMRI1,  methodsBIOPT1,  methodsECHO1, methodsFreePSA1, methodsPCa1];
+Methods2_unsorted = [methodsPSA2,  methodsMRI2,  methodsBIOPT2,  methodsECHO2, methodsFreePSA2, methodsPCa2];
+Methods3_unsorted = [methodsPSA3,  methodsMRI3,  methodsBIOPT3,  methodsECHO3, methodsFreePSA3, methodsPCa3];
+Values1_unsorted = [ValuePSA1, ValueMRI1, ValueBIOPT1, ValueECHO1, ValueFreePSA1, ValuePCa1];
+Values2_unsorted = [ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2];
+Values3_unsorted = [ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3];
+
+
+%get per patient the dates in a sorted order and the index where the date
+%is moved in the matrix
+[Dates1, IndexDates1]=sort(Dates1_unsorted, 2); 
+[Dates2, IndexDates2]=sort(Dates2_unsorted, 2);
+[Dates3, IndexDates3]=sort(Dates3_unsorted, 2);
+
+
+%Arrange the methods and values in the same order as the dates are sorted, so now you
+%get all the methods and dates sorted on date. 
+for i=1:maximumID
+     for j=1:size(Methods1_unsorted, 2)
+            Methods1(i, j)=Methods1_unsorted(i, IndexDates1(i, j));
+            Values1(i, j)=Values1_unsorted(i, IndexDates1(i, j));
+     end
+end
+ 
+for i=1:maximumID
+     for j=1:size(Methods2_unsorted, 2)
+            Methods2(i, j)=Methods2_unsorted(i, IndexDates2(i, j));
+            Values2(i, j)=Values2_unsorted(i, IndexDates2(i, j));
+     end
+end
+
+for i=1:maximumID
+     for j=1:size(Methods3_unsorted, 2)
+            Methods3(i, j)=Methods3_unsorted(i, IndexDates3(i, j));
+            Values3(i, j)=Values3_unsorted(i, IndexDates3(i, j));
+     end
+end
 end
