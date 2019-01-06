@@ -1,11 +1,11 @@
-clearvars -except BIOPT MRI PSA ECHO DBC
+clearvars -except BIOPT MRI PSA ECHO DBC PCa
 close all
 
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
 %% Inputs
-PSAwindow=[4 10];   %[-Inf Inf] [4 10]
+PSAwindow=[-Inf Inf];   %[-Inf Inf] [4 10]
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
@@ -44,12 +44,14 @@ X=[ones(size(AgePerID)) AgePerID PSAperID];
 [B_ECHO,confIntECHO,~,~,R2Fp_ECHO]=regress(ECHOmember,X);
 [B_DBC,confIntDBC,~,~,R2Fp_DBC]=regress(DBCmember,X);
 
-figure(1)
-scatter3(AgePerID,PSAperID,BIOPTmember,'filled')
-hold on
-x1fit=min(AgePerID):max(AgePerID);
-x2fit=min(PSAperID):(max(PSAperID)-min(PSAperID))/100:max(PSAperID);
-[X1FIT,X2FIT]=meshgrid(x1fit,x2fit);
-YFIT=B_BIOPT(1)+B_BIOPT(2)*X1FIT+B_BIOPT(3)*X2FIT;
-mesh(X1FIT,X2FIT,YFIT)
-hold off
+[BioptAgeStats,BioptAgeRanksum]=DispersionStats(AgePerID(BIOPTmember==0),AgePerID(BIOPTmember==1));
+[BioptPSAstats,BioptPSAranksum]=DispersionStats(PSAperID(BIOPTmember==0),PSAperID(BIOPTmember==1));
+
+[MRIAgeStats,MRIAgeRanksum]=DispersionStats(AgePerID(MRImember==0),AgePerID(MRImember==1));
+[MRIPSAstats,MRIPSAranksum]=DispersionStats(PSAperID(MRImember==0),PSAperID(MRImember==1));
+
+[ECHOAgeStats,ECHOAgeRanksum]=DispersionStats(AgePerID(ECHOmember==0),AgePerID(ECHOmember==1));
+[ECHOPSAstats,ECHOPSAranksum]=DispersionStats(PSAperID(ECHOmember==0),PSAperID(ECHOmember==1));
+
+[DBCAgeStats,DBCAgeRanksum]=DispersionStats(AgePerID(DBCmember==0),AgePerID(DBCmember==1));
+[DBCPSAstats,DBCPSAranksum]=DispersionStats(PSAperID(DBCmember==0),PSAperID(DBCmember==1));

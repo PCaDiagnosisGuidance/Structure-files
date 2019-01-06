@@ -7,7 +7,7 @@ close all
 %% Inputs
 FirstInsteadMean=true;
 PSAwindow=[4 10]; %[4 10] [-Inf Inf]
-Outliers=false;
+Outliers=true;
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)
