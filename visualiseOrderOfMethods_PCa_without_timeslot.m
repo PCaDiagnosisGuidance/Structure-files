@@ -45,6 +45,9 @@ b(1).FaceColor = 'b';
 b(2).FaceColor = 'g';
 b(3).FaceColor = 'r';
 legend(b, 'no PCa code', 'no prostate cancer', 'prostate cancer')
+xlabel('Order of diagnostic techniques used');
+ylabel('Uses of the order of techniques');
+title('Order of two diagnostic techniques with PSA<=4');
 
 figure(2)
 b2=bar(NrCombinations2, 'stacked');
@@ -52,6 +55,9 @@ b2(1).FaceColor = 'b';
 b2(2).FaceColor = 'g';
 b2(3).FaceColor = 'r';
 legend(b2, 'no PCa code', 'no prostate cancer', 'prostate cancer')
+xlabel('Order of diagnostic techniques used');
+ylabel('Uses of the order of techniques');
+title('Order of two diagnostic techniques with 4<PSA<=10');
 
 figure(3)
 b3=bar(NrCombinations3, 'stacked');
@@ -59,5 +65,8 @@ b3(1).FaceColor = 'b';
 b3(2).FaceColor = 'g';
 b3(3).FaceColor = 'r';
 legend(b3, 'no PCa code', 'no prostate cancer', 'prostate cancer')
+xlabel('Order of diagnostic techniques used');
+ylabel('Uses of the order of techniques');
+title('Order of two diagnostic techniques with PSA>10');
 
 toc

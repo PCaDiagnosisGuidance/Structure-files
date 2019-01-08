@@ -1,4 +1,4 @@
-function [NrCombinations]=findOrderMethods(methodsperMRI, scalar, PCa_code)
+function [NrCombinations]=findOrderMethods(methodsperPSA, scalar, PCa_code)
 %This function determines how many times a combination of different
 %techniques is used. 
 %It can be a combination of all possible four techniques and the DBC in an
@@ -10,17 +10,17 @@ function [NrCombinations]=findOrderMethods(methodsperMRI, scalar, PCa_code)
 %other are noticed. So for [1 2 1] with scalar=2, order 1 2 and 2 1 are
 %found, but not 1 1.
 
-maximumID=size(methodsperMRI, 1);
+maximumID=size(methodsperPSA, 1);
 switch scalar 
         
     case 2 %gives orders of two methods combined
     combinations=getcombinations(scalar);   
     NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
-        methodsperMRI2=nonzeros(methodsperMRI(i, :))';
+        methodsperPSA2=nonzeros(methodsperPSA(i, :))';
         for k=1:size(combinations, 1);
-            for j=2:length(methodsperMRI2);
-                if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) ;
+            for j=2:length(methodsperPSA2);
+                if methodsperPSA2(j-1)==combinations(k, 1) && methodsperPSA2(j)==combinations(k, 2) ;
                     if PCa_code(i)==-1; %all the time frames with no PCa code
                         NrCombinations(k, 1)=NrCombinations(k, 1)+1;
                     elseif PCa_code(i)==0; %with a PCa code of no cancer
@@ -38,10 +38,10 @@ switch scalar
     combinations=getcombinations(scalar); 
     NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
-        methodsperMRI2=nonzeros(methodsperMRI(i, :))';
+        methodsperPSA2=nonzeros(methodsperPSA(i, :))';
         for k=1:size(combinations, 1);
-            for j=2:(size(methodsperMRI2, 2)-1);
-                if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) && methodsperMRI2(j+1)==combinations(k, 3);
+            for j=2:(size(methodsperPSA2, 2)-1);
+                if methodsperPSA2(j-1)==combinations(k, 1) && methodsperPSA2(j)==combinations(k, 2) && methodsperPSA2(j+1)==combinations(k, 3);
                     if PCa_code(i)==-1; %all the time frames with no PCa code
                         NrCombinations(k, 1)=NrCombinations(k, 1)+1;
                     elseif PCa_code(i)==0; %with a PCa code of no cancer
@@ -59,10 +59,10 @@ switch scalar
     combinations=getcombinations(scalar); 
     NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
-        methodsperMRI2=nonzeros(methodsperMRI(i, :))';
+        methodsperPSA2=nonzeros(methodsperPSA(i, :))';
         for k=1:size(combinations, 1);
-            for j=2:(size(methodsperMRI2, 2)-2);
-                 if methodsperMRI2(j-1)==combinations(k, 1) && methodsperMRI2(j)==combinations(k, 2) && methodsperMRI2(j+1)==combinations(k, 3) && methodsperMRI2(j+2)==combinations(k, 4);
+            for j=2:(size(methodsperPSA2, 2)-2);
+                 if methodsperPSA2(j-1)==combinations(k, 1) && methodsperPSA2(j)==combinations(k, 2) && methodsperPSA2(j+1)==combinations(k, 3) && methodsperPSA2(j+2)==combinations(k, 4);
                     if PCa_code(i)==-1; %all the time frames with no PCa code
                         NrCombinations(k, 1)=NrCombinations(k, 1)+1;
                     elseif PCa_code(i)==0; %with a PCa code of no cancer
