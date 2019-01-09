@@ -5,7 +5,7 @@ close all
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('C:\Users\s129625\Desktop\OGO groep 5');
 
 %% Inputs
-PSAwindow=[4 10];   %[-Inf Inf] [4 10]
+PSAwindow=[-Inf Inf];   %[-Inf Inf] [4 10]
 
 %% Creation of PSA per ID dataset
 %Definitions for means of PSA and age per patient (ID)

@@ -1,6 +1,6 @@
 %[PSA,MRI,BIOPT,ECHO,DBC] = DataReadOut('E:\Scyonite\Documents\MATLAB\OGOPSAdata');
 
-clearvars -except BIOPT DBC ECHO MRI PSA
+clearvars -except BIOPT DBC ECHO MRI PSA PCa
 
 %All unique identifiers in MRI.PCa
 BioptUniq=string(unique(BIOPT.PCa));
@@ -22,20 +22,28 @@ usefulClasses=unique(BioptString(ind));
 clearvars ind i
 
 %Number of useful "ja" entries
-jaEntryCount=sum(and(BioptString=="ja",isnan(BIOPT.gleason)==0));
+jaDataset=BIOPT.gleason(and(BioptString=="ja",isnan(BIOPT.gleason)==0));
+jaStats=DispersionStats(jaDataset,1);
 
 %Number of useful "ja (eerder)" entries
-jaEerderEntryCount=sum(and(BioptString=="ja (eerder)",isnan(BIOPT.gleason)==0));
+jaEerderDataset=BIOPT.gleason(and(BioptString=="ja (eerder)",isnan(BIOPT.gleason)==0));
+jaEerderStats=DispersionStats(jaEerderDataset,1);
 
 %Number of useful "ja (later)" entries
-jaLaterEntryCount=sum(and(BioptString=="ja (later)",isnan(BIOPT.gleason)==0));
+jaLaterDataset=BIOPT.gleason(and(BioptString=="ja (later)",isnan(BIOPT.gleason)==0));
+jaLaterStats=DispersionStats(jaLaterDataset,1);
 
 %Number of useful "nee" entries
-neeEntryCount=sum(and(BioptString=="nee",isnan(BIOPT.gleason)==0));
+neeDataset=BIOPT.gleason(and(BioptString=="nee",isnan(BIOPT.gleason)==0));
+neeStats=DispersionStats(neeDataset,1);
 
-entryArr=[jaEntryCount; jaEerderEntryCount; jaLaterEntryCount; neeEntryCount];
+QMcount=sum(BioptString=="?");
+mogelijkCount=sum(BioptString=="mogelijk");
 
-clearvars jaEntryCount neeEntryCount jaEerderEntryCount jaLaterEntryCount
-
-%Table for entry counts
-entryCounts=table({'ja';'jaEerderEntryCount';'jaLaterEntryCount';'nee'},entryArr);
+%%
+% entryArr=[jaEntryCount; jaEerderEntryCount; jaLaterEntryCount; neeEntryCount];
+% 
+% clearvars jaEntryCount neeEntryCount jaEerderEntryCount jaLaterEntryCount
+% 
+% %Table for entry counts
+% entryCounts=table({'ja';'jaEerderEntryCount';'jaLaterEntryCount';'nee'},entryArr);
