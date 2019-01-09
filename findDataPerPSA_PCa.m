@@ -101,7 +101,7 @@ maximumID=size(Dates1, 1); %find the maximal patient ID (how many patients we ha
                 for j=1:size(Methods3, 2)
                     if (Dates3(i, j)<=maxDates3) && (Dates3(i, j)>0) && (Dates3(i, j)~=90) && (Dates3(i, j)>minDates3);
                         MethodsperPSA3(i, j)=Values3(i, j);
-                        ValuesperPSA3(i, j)=Values3(i, j);
+                        ValuesperPSA3(i, j)=Methods3(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
                         %also bigger than 0 and not be 90 (to avoid getting 0's in

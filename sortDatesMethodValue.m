@@ -166,7 +166,7 @@ for i=1:maximumID
         methodsPCa2(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
         ValuePCa2(i, 1:length(datesPCa))=PCa.PCa(DateNrPCa)';
         
-    elseif PSA.psa(DateNrFirstPSA,1)>1
+    elseif PSA.psa(DateNrFirstPSA,1)>10
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA3(i, 1:length(datesPSA))=datesPSA;
         methodsPSA3(i, 1:length(datesPSA))=ones(1, length(datesPSA));

@@ -15,7 +15,7 @@ close all
 %(1)PSA=<4  (2)4<PSA<=10 and (3)PSA>10 and sort the list based on the date
 
 [Dates1, Dates2, Dates3, Methods1, Methods2, Methods3, Values1, Values2, Values3, patientDatesPSA1, patientDatesPSA2, patientDatesPSA3]=sortDatesMethodValue(PSA,MRI,BIOPT,ECHO,PCa);
-
+5
 %%
 %Sort the Values and Methods based on the dates given
 %In the given time frame [minboundary, maxboundary] find all the methods 
@@ -33,7 +33,7 @@ close all
 %So if you choose three, any order of three techniques used is found, for
 %example PSA -> MRI -> BIOPT
 %Scalar=2/3/4 is possible
-scalar=2;
+scalar=3;
 
 NrCombinations1=findOrderMethods(methodsperPSA1, scalar, PCa_code(:, 1));
 NrCombinations2=findOrderMethods(methodsperPSA2, scalar, PCa_code(:, 2));
