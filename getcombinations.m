@@ -1,5 +1,8 @@
 function combinations=getcombinations(scalar)
 %script all possible combinations of methods
+%combinations with two methods that are the same are also included, because
+%repetition also gives important information.
+
 switch scalar
     case 2 %for an order of two methods
         combinations=[];

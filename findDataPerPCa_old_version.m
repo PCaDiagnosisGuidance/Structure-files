@@ -1,22 +1,19 @@
 function [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
-    AllValuesperPSA3, methodsperPSA3, PCa_code]=findDataPerPCa_R(PSA,MRI,BIOPT,ECHO,PCa, minBoundary, maxBoundary)
+    AllValuesperPSA3, methodsperPSA3, PCa_code]=findDataPerPCa_old_version(PSA,MRI,BIOPT,ECHO,PCa, minBoundary, maxBoundary)
 
 %find timeslots based PSA data. 
 %Order of steps taken in the script
-%1)Read out of data
-%2)Gets all PSA, MRI, BIOPT and ECHO data per patient and a list of which
-%method is used
-%3)Gives one big list of dates and methods used per patient
-%4)Sort the methods used based on the dates
-%5)Find the first PSA examination used
-%6)find the maximal and minimal time of the timeslot
-%7)find all the examinations done in this timeslot
+%1)Get a list of all measurements performed per patient, all values for these measurements and all dates of the measurement.
+%  The patients are sorted in a PSA group, so (1)PSA=<4  (2)4<PSA<=10 and (3)PSA>10
+%2)Sort all the measurement done and the values given in chronological order. 
+%3)Find the first PSA examination used
+%4)find the maximal and minimal time of the timeslot
+%5)find all the examinations done in this timeslot
 
-%read the dataset
-close all
 
-%find the Dates per patient per method and how many times it is detected. 
-%Also find out which method is used at which time
+%  Get a list of measurements per technique performed per patient with the combining values and dates of the measurements.
+%  These patients are thereby sorted in a PSA group based on their first
+%  PSA measurement.
 [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1,...
     patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2,  ...
     patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3, ...
@@ -27,6 +24,8 @@ close all
     ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2, ...
     ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3]=getPatientDatesPSAgroups_R(PSA,MRI,BIOPT,ECHO,PCa);    
 
+% Combine all patient per method into one list of all methods/values/dates
+% per patient
 Dates1 = [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesECHO1, patientDatesFreePSA1, patientDatesPCa1];
 Dates2 = [patientDatesPSA2, patientDatesMRI2, patientDatesBIOPT2, patientDatesECHO2, patientDatesFreePSA2, patientDatesPCa2];
 Dates3 = [patientDatesPSA3, patientDatesMRI3, patientDatesBIOPT3, patientDatesECHO3, patientDatesFreePSA3, patientDatesPCa3];
@@ -41,7 +40,7 @@ maximumID=max(PSA.ID); %find the maximal patient ID (how many patients we have i
 
 % Loop over all dates, methods and values for the three PSA groups
 for k = 1:3 
-    if k == 1
+    if k == 1 %This is the group of patients with PSA<=4
     %Making a list of all the dates sorted
     AllDates=Dates1;
     AllMethods=Methods1;
@@ -49,35 +48,39 @@ for k = 1:3
     [AllDates, IndexDates]=sort(AllDates, 2); %get the index the dates are sorted towards to use this for the sorting of the methods
     
     %Arrange the methods on the same order as the dates are sorted, so now you
-    %get all the methods sorted on date. 
+    %get all the methods and values sorted on date. 
     for i=1:maximumID
         for j=1:size(AllMethods, 2)
-            AllMethods2(i, j)=AllMethods(i, IndexDates(i, j));
-            AllValues2(i, j)=AllValues(i, IndexDates(i, j));
+            AllMethods2(i, j)=AllMethods(i, IndexDates(i, j)); %sorted list
+            AllValues2(i, j)=AllValues(i, IndexDates(i, j)); %sorted list
         end
     end
-        methodsperPSA1=zeros(maximumID, size(AllMethods2, 2)); %this will become the methods used in the timeslot of the first PSA measurement
+    
+        methodsperPSA1=zeros(maximumID, size(AllMethods2, 2));
         AllValuesperPSA1=zeros(maximumID, size(AllValues2, 2));
-        PCa_code1=-1*ones(maximumID, 1);
+        PCa_code1=-1*ones(maximumID, 1); %will be initiated as -1 (unknown)
         
-        %find the methods used in the timeslot of the first PSA measurement
+        %find the methods used and corresponding values in the timeslot of the first PSA measurement
         for i=1:maximumID
-            if sum(patientDatesPSA1(i, :))>0 %remove all patient without a PSA measurement
-                firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
-                minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
-                maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
-                firstPCa1=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first DBC code
+            if sum(patientDatesPSA1(i, :))>0                      %remove all patient without a PSA measurement
+                firstPSA=find(AllMethods2(i, :)==1, 1, 'first');  %find the first PSA measurement
+                minDates=AllDates(i, firstPSA)-minBoundary;       %find minimal date in timeslot
+                maxDates=AllDates(i, firstPSA)+maxBoundary;       %find maximal date in timeslot
+                firstPCa1=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first PCa value
+                
+                %PCA_code1 is a list of the first PCa values per patient with PSA<=4
                 if length(firstPCa1)==1;
-                    PCa_code1(i)=AllValues2(i, firstPCa1); %first the first PCa value of this patient
+                    PCa_code1(i)=AllValues2(i, firstPCa1);
                 end
+                
                 for j=1:size(AllMethods2, 2)
                     if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA1(i, j)=AllMethods2(i, j);
                         AllValuesperPSA1(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
-                        %the list
+                        %also bigger than 0 and not be the maxboundary (to
+                        %avoid getting values for a date of 0)
                     end
                 end
 
@@ -89,7 +92,8 @@ for k = 1:3
     
     clear firstPSA minDates maxDates AllMethods2 AllValues2 AllDates ...
         IndexDates AllValues AllMethods AllDates
-    if k == 2
+    
+    if k == 2  %for 4<PSA<=10
     %Making a list of all the dates sorted
     AllDates=Dates2;
     AllMethods=Methods2;
@@ -114,18 +118,20 @@ for k = 1:3
                 firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
                 minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
                 maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
-                firstPCa2=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first DBC code
+                firstPCa2=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first PCa value
+                
                 if length(firstPCa2)==1;
-                    PCa_code2(i)=AllValues2(i, firstPCa2); %first the first PCa value of this patient
+                    PCa_code2(i)=AllValues2(i, firstPCa2); %the first PCa value of this patient
                 end
+                
                 for j=1:size(AllMethods2, 2)
                     if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA2(i, j)=AllMethods2(i, j);
                         AllValuesperPSA2(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
-                        %the list
+                        %also bigger than 0 and not be the maxboundary (to
+                        %avoid getting values for a date of 0)
                     end
                 end
 
@@ -136,7 +142,8 @@ for k = 1:3
     
     clear firstPSA minDates maxDates AllMethods2 AllValues2 AllDates ...
         IndexDates AllValues AllMethods AllDates
-    if k == 3 
+    
+    if k == 3 %for PSA>10
     %Making a list of all the dates sorted
     AllDates=Dates3;
     AllMethods=Methods3;
@@ -160,18 +167,20 @@ for k = 1:3
                 firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
                 minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
                 maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
-                firstPCa3=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first DBC code
+                firstPCa3=find(AllMethods2(i, :)==6, 1, 'first'); %finds the first PCa value
+                
                 if length(firstPCa3)==1;
-                    PCa_code3(i)=AllValues2(i, firstPCa3); %first the first PCa value of this patient
+                    PCa_code3(i)=AllValues2(i, firstPCa3); %the first PCa value of this patient
                 end
+                
                 for j=1:size(AllMethods2, 2)
                     if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA3(i, j)=AllMethods2(i, j);
                         AllValuesperPSA3(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
-                        %the list
+                        %also bigger than 0 and not be the maxboundary (to
+                        %avoid getting values for a date of 0)
                     end
                 end
 
@@ -181,5 +190,5 @@ for k = 1:3
     end
             
 end
-PCa_code=[PCa_code1, PCa_code2, PCa_code3]; %make a [maximumID, 3] matrix for the PCa value
+PCa_code=[PCa_code1, PCa_code2, PCa_code3]; %make a size(maximumID, 3) matrix for all the PCa values
 end
