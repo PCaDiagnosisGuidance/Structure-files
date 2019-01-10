@@ -1,7 +1,7 @@
 %visualiseOrderOfMethods_PCa_old_version
 tic
 close all
-[PSA,MRI,BIOPT,ECHO,DBC, PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
+%[PSA,MRI,BIOPT,ECHO,DBC, PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
 % 
 %get per patient the dates sorted. Also the methods and values are sorted
 %depending on the dates
@@ -11,7 +11,7 @@ close all
 % %visualise order of methods
 %%
 
-scalar=2; % defines the length of the combinations you want to examine. 
+scalar=3; % defines the length of the combinations you want to examine. 
 
 NrCombinations1=findOrderMethods(methodsperPSA1, scalar, PCa_code(:, 1));
 NrCombinations2=findOrderMethods(methodsperPSA2, scalar, PCa_code(:, 2));
@@ -23,8 +23,8 @@ b(1).FaceColor = 'b';
 b(2).FaceColor = 'g';
 b(3).FaceColor = 'r';
 legend(b, 'no PCa code', 'no prostate cancer', 'prostate cancer')
-xlabel('Order of diagnostic techniques used');
-ylabel('Uses of the order of techniques');
+xlabel('Order of diagnostic technique');
+ylabel('Occurrences of the order');
 title('Order of two diagnostic techniques with PSA<=4');
 
 figure(2)
@@ -33,8 +33,8 @@ b2(1).FaceColor = 'b';
 b2(2).FaceColor = 'g';
 b2(3).FaceColor = 'r';
 legend(b2, 'no PCa code', 'no prostate cancer', 'prostate cancer')
-xlabel('Order of diagnostic techniques used');
-ylabel('Uses of the order of techniques');
+xlabel('Order of diagnostic technique');
+ylabel('Occurrences of the order');
 title('Order of two diagnostic techniques with 4<PSA<=10');
 
 figure(3)
@@ -43,8 +43,8 @@ b3(1).FaceColor = 'b';
 b3(2).FaceColor = 'g';
 b3(3).FaceColor = 'r';
 legend(b3, 'no PCa code', 'no prostate cancer', 'prostate cancer')
-xlabel('Order of diagnostic techniques used');
-ylabel('Uses of the order of techniques');
+xlabel('Order of diagnostic technique');
+ylabel('Occurrences of the order');
 title('Order of two diagnostic techniques with PSA>10');
 
 toc
