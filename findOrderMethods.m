@@ -17,7 +17,7 @@ switch scalar
     combinations=getcombinations(scalar);   
     NrCombinations=zeros(size(combinations, 1), 3);
     for i=1:maximumID
-        methodsperPSA2=nonzeros(methodsperPSA(i, :))';
+        methodsperPSA2=methodsperPSA(i, :);
         for k=1:size(combinations, 1);
             for j=2:length(methodsperPSA2);
                 if methodsperPSA2(j-1)==combinations(k, 1) && methodsperPSA2(j)==combinations(k, 2) ;
