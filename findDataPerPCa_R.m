@@ -63,15 +63,15 @@ for k = 1:3
         for i=1:maximumID
             if sum(patientDatesPSA1(i, :))>0 %remove all patient without a PSA measurement
                 firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
-                minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
+                minDates=AllDates(i, firstPSA)+minBoundary; %find minimal date in timeslot
                 maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
                 for j=1:size(AllMethods2, 2)
-                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=90) && (AllDates(i, j)>minDates)
+                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA1(i, j)=AllMethods2(i, j);
                         AllValuesperPSA1(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
+                        %also bigger than 0 and not be maxboundary (to avoid getting 0's in
                         %the list
                     end
                 end
@@ -106,15 +106,15 @@ for k = 1:3
         for i=1:maximumID
             if sum(patientDatesPSA2(i, :))>0 %remove all patient without a PSA measurement
                 firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
-                minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
+                minDates=AllDates(i, firstPSA)+minBoundary; %find minimal date in timeslot
                 maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
                 for j=1:size(AllMethods2, 2)
-                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=90) && (AllDates(i, j)>minDates)
+                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA2(i, j)=AllMethods2(i, j);
                         AllValuesperPSA2(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
+                        %also bigger than 0 and not be maxboundary (to avoid getting 0's in
                         %the list
                     end
                 end
@@ -148,15 +148,15 @@ for k = 1:3
         for i=1:maximumID
             if sum(patientDatesPSA3(i, :))>0 %remove all patient without a PSA measurement
                 firstPSA=find(AllMethods2(i, :)==1, 1, 'first'); %find the first PSA measurement
-                minDates=AllDates(i, firstPSA)-minBoundary; %find minimal date in timeslot
+                minDates=AllDates(i, firstPSA)+minBoundary; %find minimal date in timeslot
                 maxDates=AllDates(i, firstPSA)+maxBoundary; %find maximal date in timeslot
                 for j=1:size(AllMethods2, 2)
-                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=90) && (AllDates(i, j)>minDates)
+                    if (AllDates(i, j)<=maxDates) && (AllDates(i, j)>0) && (AllDates(i, j)~=maxBoundary) && (AllDates(i, j)>minDates)
                         methodsperPSA3(i, j)=AllMethods2(i, j);
                         AllValuesperPSA3(i, j)=AllValues2(i, j);
                         %the date should be smaller than the maximum date and
                         %bigger than the minimal date, 
-                        %also bigger than 0 and not be 90 (to avoid getting 0's in
+                        %also bigger than 0 and not be maxboundary (to avoid getting 0's in
                         %the list
                     end
                 end
