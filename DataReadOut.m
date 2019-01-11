@@ -49,9 +49,9 @@ gender = dataArray{:, 2};
 age = dataArray{:, 3};
 psa = dataArray{:, 4};
 freepsa = dataArray{:, 5};
-% unit = dataArray{:, 6};
+% unit = dataArray{:, 6}; % there is only on unit, so this is not imported
 datepsa = dataArray{:, 7};
-% specialism = dataArray{:, 8};
+% specialism = dataArray{:, 8}; % specialism and activity are not used in the analysis
 % activity = dataArray{:, 9};
 
 % Clear temporary variables
@@ -106,7 +106,7 @@ PSA.gender = gender;
 PSA.age = age;
 PSA.psa = psa;
 PSA.freepsa = freepsa; 
-%PSA.unit = unit;
+%PSA.unit = unit; % there is only one unit, so this is not imported 
 PSA.date = datepsa;
 
 %% MRI data Read-out 
@@ -124,7 +124,7 @@ fclose(fileID);
 
 mriID = dataArray{:, 1};
 mridate = dataArray{:, 2};
-%OMSCHR = dataArray{:, 3};  deze is waarschijnlijk niet nodig
+%OMSCHR = dataArray{:, 3};  this is not used in the data analysis
 pirads = dataArray{:, 4};
 mriPCa = dataArray{:, 5};
 
@@ -142,7 +142,7 @@ for i=1:length(pirads)
         pirads(i,1) = {'?'};
     end
     
-    %Throw the 6 values away (questionable actually, maybe make them 5?)
+    % Convert the 6 values to 5, the specialist was consulted and said it must have been a typing error (PI-RADS of 6 do not exist).
     if strcmp(pirads(i,1),'6')
         pirads(i,1) = {'5'};
     end
@@ -151,7 +151,7 @@ pirads = str2double(pirads);
 
 % mriPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
 for i=1:length(mriPCa)
-    if strcmp(mriPCa(i,1),'ja') %|| strcmp(mriPCa(i,1),'recidief')
+    if strcmp(mriPCa(i,1),'ja') 
         mriPCa(i,1) = {'1'};
     elseif strcmp(mriPCa(i,1),'nee')
         mriPCa(i,1) = {'0'};
@@ -213,13 +213,10 @@ bioptPCa = lower(bioptPCa);
 for i=1:length(bioptPCa)
     if strcmp(bioptPCa(i,1),'nee') == 1 
         bioptPCa(i,1) = {'0'}; 
-    elseif strcmp(bioptPCa(i,1),'ja') == 1 %elseif strcmp(bioptPCa(i,1),'ja (eerder)') == 1 ...
-           % || strcmp(bioptPCa(i,1),'ja (later)') == 1 
+    elseif strcmp(bioptPCa(i,1),'ja') == 1 
         bioptPCa(i,1) = {'1'};
     elseif strcmp(bioptPCa(i,1),'?') == 1
         bioptPCa(i,1) = {'?'};
-   % elseif strcmp(bioptPCa(i,1),'mogelijk') == 1 % niet zeker hoe we dit moeten doen
-   %     bioptPCa(i,1) = {'0.5'};                 % 0.5 als mogelijke uitkomst?
     end
 end
 bioptPCa = str2double(bioptPCa);
@@ -260,7 +257,7 @@ for i=1:length(volume)
         volume(i,1) = {'NaN'}; 
     elseif strcmp(volume(i,1),'?') == 1
         volume(i,1) = {'NaN'};
-    elseif strcmp(volume(i,1),'>116') == 1 % Deze twee elseif statements zouden wel 'mooier' kunnen
+    elseif strcmp(volume(i,1),'>116') == 1 
         volume(i,1) = {'116'};  
     elseif strcmp(volume(i,1),'>150') == 1
         volume(i,1) = {'150'};
@@ -305,7 +302,7 @@ for i=1:length(dbcedate)
 end
 dbcedate = datenum(dbcedate);
 
-% dbcPCa completion, applying 1 to PCa positve and 0 to PCa negative cases
+% dbcPCa completion, applying 1 to PCa positive and 0 to PCa negative cases (-1 is later on used for all unknown values)
 for i=1:length(dbcPCa)
     if strcmp(dbcPCa(i,1),'niet-PCA') == 1 
         dbcPCa(i,1) = {'0'}; 
@@ -321,7 +318,7 @@ DBC.sdate = dbcsdate;
 DBC.edate = dbcedate;
 DBC.PCa = dbcPCa;
 
-%% Creating a merged PCa dataset
+%% Creating a merged PCa dataset of the PCa values in the DBC and the BIOPT dataset
 BIOPTUniq=unique(BIOPT.ID);
 DBCUniq=unique(DBC.ID);
 
