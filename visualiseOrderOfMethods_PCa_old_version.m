@@ -28,7 +28,7 @@ close all
 %this in a bar graph. Add PCa values to the bar graph, to visualise how
 %many people with which order have PCa/no PCa/no PCa present. 
 
-scalar=3; 
+scalar=2; 
 % defines the length of the combinations you want to examine. Can be 2 or 3 (4 is implemented, but not used in our research)
 %So if you choose three, any order of three techniques used is found, for example PSA -> MRI -> BIOPT.
 
@@ -44,7 +44,7 @@ b(3).FaceColor = 'r'; %prostate cancer
 legend(b, 'no PCa code', 'no prostate cancer', 'prostate cancer')
 xlabel('Order of diagnostic technique');
 ylabel('Occurrences of the order');
-title('Order of two diagnostic techniques with PSA<=4');
+title('Order of two diagnostic techniques with PSA<4');
 
 figure(2)
 b2=bar(NrCombinations2, 'stacked');
@@ -54,7 +54,7 @@ b2(3).FaceColor = 'r';
 legend(b2, 'no PCa code', 'no prostate cancer', 'prostate cancer')
 xlabel('Order of diagnostic technique');
 ylabel('Occurrences of the order');
-title('Order of two diagnostic techniques with 4<PSA<=10');
+title('Order of two diagnostic techniques with 4<=PSA<10');
 
 figure(3)
 b3=bar(NrCombinations3, 'stacked');
@@ -64,6 +64,6 @@ b3(3).FaceColor = 'r';
 legend(b3, 'no PCa code', 'no prostate cancer', 'prostate cancer')
 xlabel('Order of diagnostic technique');
 ylabel('Occurrences of the order');
-title('Order of two diagnostic techniques with PSA>10');
+title('Order of two diagnostic techniques with PSA>=10');
 
 toc
