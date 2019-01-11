@@ -88,16 +88,12 @@ ValuePCa3=zeros(maximumID, 100);
 
 %% Create a matrix of the dates an examination is done per patientnumber 
 % (one row = one patient)
-% Create a matrix of the dates an examination is done per patientnumber 
-% (one row = one patient)
 
 for i=1:maximumID
 %   for i=1:length(techniques)
     %make a matrix of dates for PSA
     
-    % VOEG HIER NOG STUK SARAY TOE, ZODAT DIE ALLEEN KIJKT NAAR UNIEKE ID'S
-    % NU GEEFT HET SCRIPT EEN FOUTMELDING WANNEER DateNrPSA leeg is.
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     DateNrPSA=find(PSA.ID==i);
     PCaNr = find(PCa.ID==i);
     currentPCa = PCa.PCa(PCaNr,1);
@@ -105,8 +101,7 @@ for i=1:maximumID
     if isempty(PCaNr)==1
         currentPCa = -1;
     end
-    % Vraag Saray: wat gebeurt er wanneer DateNrPSA leeg is?
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     
     % Create a condition here on wether or not the respective patient has a
     % PCa of 1 or 0 (yes or no) or if it's not known (PCa = -1). Based on 
@@ -227,7 +222,7 @@ end
 % FreePSA is a special case as this information is contained in the same
 % dataset as PSA. First an assessment is made on wether or not the FPSA
 % value exists (>0) or not (=0). Based on this the respective matrices gain
-% a value attached to FPSA. This is done for the three PSA groups.
+% a value attached to FPSA. This is done for the three PCa groups.
 patientDatesFreePSA1=zeros(maximumID, size(patientDatesPSA1, 2));
 for i=1:size(ValueFreePSA1, 1)
     for j=1:size(ValueFreePSA1, 2)
