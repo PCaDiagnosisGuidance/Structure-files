@@ -3,7 +3,7 @@
 
 [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
     AllValuesperPSA3, methodsperPSA3]=findDataPerPSAgroups_R(PSA,MRI,BIOPT,ECHO,PCa, -1, 119);
-% By exchanging findDataPerPCa_R for findDataPerPSAV2_R you can plot
+% By exchanging findDataPerPSAgroups_R for findDataPerPCa_R you can plot
 % the figures for the three PSA groups instead of the three PCa groups.
 
 psa_value1=zeros(13939, 1);
@@ -15,8 +15,8 @@ pca_value1=zeros(13939,1);
 
 % Extract all the right values for the parameters in the given timeslot. Do
 % this per group (1, 2 and 3). Where 1 corresponds to either PCa = 1 or 
-% PSA<=4; 2 corresponds to PCa = 0 or 4<PSA<=10 and 3 corresponds to 
-% PCa = -1 or PSA > 10.
+% PSA<4; 2 corresponds to PCa = 0 or 4<=PSA<10 and 3 corresponds to 
+% PCa = -1 or PSA >= 10.
 
 for i=1:13939
     psa_index=find(methodsperPSA1(i, :)==1, 1, 'first');
