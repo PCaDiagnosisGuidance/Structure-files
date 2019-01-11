@@ -4,7 +4,7 @@ function [AllValuesperPSA1, methodsperPSA1,AllValuesperPSA2, methodsperPSA2, ...
 %find timeslots based PSA data. 
 %Order of steps taken in the script
 %1)Get a list of all measurements performed per patient, all values for these measurements and all dates of the measurement.
-%  The patients are sorted in a PSA group, so (1)PSA=<4  (2)4<PSA<=10 and (3)PSA>10
+%  The patients are sorted in a PSA group, so (1)PSA<4  (2)4<=PSA<10 and (3)PSA>=10
 %2)Sort all the measurement done and the values given in chronological order. 
 %3)Find the first PSA examination used
 %4)find the maximal and minimal time of the timeslot
@@ -40,7 +40,7 @@ maximumID=max(PSA.ID); %find the maximal patient ID (how many patients we have i
 
 % Loop over all dates, methods and values for the three PSA groups
 for k = 1:3 
-    if k == 1 %This is the group of patients with PSA<=4
+    if k == 1 %This is the group of patients with PSA<4
     %Making a list of all the dates sorted
     AllDates=Dates1;
     AllMethods=Methods1;
@@ -93,7 +93,7 @@ for k = 1:3
     clear firstPSA minDates maxDates AllMethods2 AllValues2 AllDates ...
         IndexDates AllValues AllMethods AllDates
     
-    if k == 2  %for 4<PSA<=10
+    if k == 2  %for 4<=PSA<10
     %Making a list of all the dates sorted
     AllDates=Dates2;
     AllMethods=Methods2;
@@ -143,7 +143,7 @@ for k = 1:3
     clear firstPSA minDates maxDates AllMethods2 AllValues2 AllDates ...
         IndexDates AllValues AllMethods AllDates
     
-    if k == 3 %for PSA>10
+    if k == 3 %for PSA>=10
     %Making a list of all the dates sorted
     AllDates=Dates3;
     AllMethods=Methods3;

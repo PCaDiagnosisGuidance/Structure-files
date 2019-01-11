@@ -101,7 +101,7 @@ for i=1:maximumID
     % PSA value under 4, between 4 and 10 or higher than 10. Based on this
 
     % it puts the values in one of the three sets of matrices (1,2 or 3).
-    if PSA.psa(DateNrFirstPSA,1)<=4
+    if PSA.psa(DateNrFirstPSA,1)<4
 
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA1(i, 1:length(datesPSA))=datesPSA;
@@ -138,7 +138,7 @@ for i=1:maximumID
         methodsPCa1(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
         ValuePCa1(i, 1:length(datesPCa))=PCa.PCa(DateNrDBC)';
     
-    elseif PSA.psa(DateNrFirstPSA,1)>4 & PSA.psa(DateNrFirstPSA)<=10
+    elseif PSA.psa(DateNrFirstPSA,1)>=4 & PSA.psa(DateNrFirstPSA)<10
         
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA2(i, 1:length(datesPSA))=datesPSA;
@@ -175,7 +175,7 @@ for i=1:maximumID
         methodsPCa2(i, 1:length(datesPCa))=6*ones(1, length(datesPCa));
         ValuePCa2(i, 1:length(datesPCa))=PCa.PCa(DateNrDBC)';
         
-    elseif PSA.psa(DateNrFirstPSA,1)>10
+    elseif PSA.psa(DateNrFirstPSA,1)>=10
         datesPSA=PSA.date(DateNrPSA)';
         patientDatesPSA3(i, 1:length(datesPSA))=datesPSA;
         methodsPSA3(i, 1:length(datesPSA))=ones(1, length(datesPSA));

@@ -2,7 +2,7 @@
 
 %visualiseOrderOfMethods_PCa_old_version is a script that makes a bargraph of how many times a order of diagnostic techniques is used. 
 %the order of methods can consists of 2, 3 (or 4) methods in a row. 
-%The order of methods are visualised for PSA<=4, 4<PSA<=10 and PSA>10
+%The order of methods are visualised for PSA<4, 4=<PSA<10 and PSA>=10
 %Only the methods that are in a given timeframe [-1, 119] are used
 
 tic
@@ -12,7 +12,7 @@ close all
 [PSA,MRI,BIOPT,ECHO,DBC,PCa]=DataReadOut('C:\Users\s169977\Desktop\OGO 5 computational biology\OGO groep 5');
 
 %%
-%make a list of dates, methods and values of the measurement for (1)PSA=<4  (2)4<PSA<=10 and (3)PSA>10 and sort the list based on the date
+%make a list of dates, methods and values of the measurement for (1)PSA<4  (2)4<=PSA<10 and (3)PSA>=10 and sort the list based on the date
 %Sort the Values and Methods based on the dates given
 %In the given time frame [minboundary, maxboundary] find all the methods used in this time and all the values of these measurement within the PSA groups (PSA>=4, 4<PSA<=10 and PSA>10).
 %The timeframe is based on the first PSA measurement, so the time frame [-1, 119] 
