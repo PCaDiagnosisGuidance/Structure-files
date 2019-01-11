@@ -16,10 +16,6 @@ for i=1:length(PSAUniq)
     AgePerID(i)=AgeArr(1);
 end
 
-FirstBelow4Stats=DispersionStats(AgePerID(PSAperID<=4),PSAperID(PSAperID<=4));
-FirstBetween4and10Stats=DispersionStats(AgePerID(PSAperID > 4 & PSAperID <=10),PSAperID(PSAperID > 4 & PSAperID <=10));
-FirstOver10Stats=DispersionStats(AgePerID(PSAperID>10),PSAperID(PSAperID>10));
+FirstStats=DispersionStats(AgePerID,PSAperID);
 
-AllBelow4Stats=DispersionStats(PSA.age(PSA.psa<=4),PSA.psa(PSA.psa<=4));
-AllBetween4and10Stats=DispersionStats(PSA.age(PSA.psa > 4 & PSA.psa <=10),PSA.psa(PSA.psa > 4 & PSA.psa <=10));
-AllOver10Stats=DispersionStats(PSA.age(PSA.psa > 10),PSA.psa(PSA.psa > 10));
+AllStats=DispersionStats(PSA.age,PSA.psa);

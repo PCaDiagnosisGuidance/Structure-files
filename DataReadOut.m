@@ -1,4 +1,4 @@
-function [PSA,MRI,BIOPT,ECHO,DBC,varargout] = DataReadOut(datalocation)
+function [PSA,MRI,BIOPT,ECHO,DBC,PCa] = DataReadOut(datalocation)
 % datalocation should be a string of the folder location where the csv data
 % files are saved. 
 % This document reads out the 5 data files and assigns the columns
@@ -359,6 +359,4 @@ ind=find(~isnan(PCa.PCa));
 PCa.ID=PCa.ID(ind);
 PCa.PCa=PCa.PCa(ind);
 PCa.date=PCa.date(ind);
-
-varargout{1}=PCa;
 end
