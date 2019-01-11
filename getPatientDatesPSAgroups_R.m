@@ -8,7 +8,7 @@ function [patientDatesPSA1, patientDatesMRI1, patientDatesBIOPT1, patientDatesEC
     ValuePSA2, ValueMRI2, ValueBIOPT2, ValueECHO2, ValueFreePSA2, ValuePCa2, ...
     ValuePSA3, ValueMRI3, ValueBIOPT3, ValueECHO3, ValueFreePSA3, ValuePCa3]=getPatientDatesPSAgroups_R(PSA,MRI,BIOPT,ECHO,PCa)    
 
-% pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA=<4, 2 is 4<PSA=<10 and 3 is PSA>10) 
+% pre-allocation of patientdates, do this for the three PSA groups (where 1 is PSA<4, 2 is 4<=PSA<10 and 3 is PSA>=10) 
 % This is necessary because the three different groups have different sizes of matrices. Later on they will have to be concatenated.
 
 %% pre-allocation of patientdates
@@ -80,8 +80,6 @@ ValueFreePSA3=zeros(maximumID, 100);
 ValuePCa3=zeros(maximumID, 100);
 
 %% Create a matrix of the dates an examination is done per patientnumber 
-% (one row = one patient)
-% Create a matrix of the dates an examination is done per patientnumber 
 % (one row = one patient)
 
 for i=1:maximumID
